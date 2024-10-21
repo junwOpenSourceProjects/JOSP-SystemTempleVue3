@@ -1,0 +1,6 @@
+{
+  "*.{js,ts,vue}": ["prettier --write", "git add"],
+  "*.{json,yml}": ["prettier --write", "git add"],
+  "*.{scss,css}": ["stylelint --fix", "git add"],
+  "*.md": ["prettier --write", "git add"]
+}

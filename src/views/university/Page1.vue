@@ -1,7 +1,6 @@
 <!-- src/views/Page1.vue -->
 <template>
   <div class="app-container">
-    <!-- 查询区域 -->
     <el-card class="search-card">
       <el-form
         :inline="true"
@@ -53,7 +52,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <!-- 新增的查询条件 rankVariant -->
         <el-row :gutter="20" type="flex" justify="start">
           <el-col :span="6">
             <el-form-item label="排名类型">
@@ -81,7 +79,6 @@
       </el-form>
     </el-card>
 
-    <!-- 表格区域 -->
     <el-scrollbar>
       <el-table :data="tableData" style="width: 100%" :loading="loading">
         <el-table-column prop="id" label="ID" width="60" />
@@ -97,7 +94,6 @@
       </el-table>
     </el-scrollbar>
 
-    <!-- 分页组件 -->
     <div class="pagination">
       <el-pagination
         background
@@ -118,38 +114,29 @@ import { ElMessage } from "element-plus";
 export default {
   name: "Page1",
   setup() {
-    // 定义表格数据
     const tableData = ref([]);
-
-    // 定义搜索表单
     const searchForm = ref({
       universityName: "",
-      universityTagsState: "", // 所在大洲
-      universityTags: "", // 所在国家
-      currentRank: 10, // QS排名高于某个值
-      rankVariant: "", // 排名类型
+      universityTagsState: "",
+      universityTags: "",
+      currentRank: 10,
+      rankVariant: "",
     });
 
-    // 分页相关
     const currentPage = ref(1);
     const limit = ref(10);
     const total = ref(0);
-
-    // 加载状态
     const loading = ref(false);
 
-    // 获取数据的函数
     const fetchData = async () => {
       loading.value = true;
       try {
-        // 构建查询参数
         const params = {
           page: currentPage.value,
           limit: limit.value,
           universityName: searchForm.value.universityName,
         };
 
-        // 仅添加有值的搜索条件
         if (searchForm.value.universityTagsState) {
           params.universityTagsState = searchForm.value.universityTagsState;
         }
@@ -164,14 +151,10 @@ export default {
         }
 
         const queryString = new URLSearchParams(params).toString();
-
-        // 使用 /api 前缀
         const response = await fetch(`/dev-api/query/queryAll?${queryString}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            // 如果需要认证，可以在这里添加认证头，例如：
-            // 'Authorization': `Bearer ${token}`,
           },
         });
 
@@ -180,13 +163,6 @@ export default {
         }
 
         const data = await response.json();
-
-        // 假设 API 返回的数据结构如下：
-        // {
-        //   records: [...], // 数据数组
-        //   total: 100,  // 总记录数
-        // }
-
         tableData.value = data.records;
         total.value = data.total;
       } catch (error) {
@@ -197,13 +173,11 @@ export default {
       }
     };
 
-    // 处理搜索
     const handleSearch = () => {
       currentPage.value = 1;
       fetchData();
     };
 
-    // 重置搜索
     const resetSearch = () => {
       searchForm.value.universityName = "";
       searchForm.value.universityTagsState = "";
@@ -213,13 +187,11 @@ export default {
       handleSearch();
     };
 
-    // 处理分页变化
     const handlePageChange = (page) => {
       currentPage.value = page;
       fetchData();
     };
 
-    // 初始化获取数据
     onMounted(() => {
       fetchData();
     });
@@ -240,7 +212,6 @@ export default {
 </script>
 
 <style scoped>
-/* 查询卡片样式 */
 .search-card {
   display: flex;
   flex-direction: column;
@@ -248,23 +219,19 @@ export default {
   margin-bottom: 20px;
 }
 
-/* 搜索表单样式 */
 .search-form {
   width: 100%;
 }
 
-/* 按钮行样式 */
 .button-row {
   margin-top: 10px;
 }
 
-/* 分页样式 */
 .pagination {
   margin-top: 20px;
   text-align: right;
 }
 
-/* 表格列对齐调整（可选） */
 .el-table th,
 .el-table td {
   text-align: center;

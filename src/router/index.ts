@@ -23,11 +23,11 @@ export const constantRoutes: RouteRecordRaw[] = [
     meta: { hidden: true },
   },
   //测试引入静态页面
-  {
-    path: "/page1",
-    component: () => import("@/views/university/page1.vue"),
-    meta: { hidden: false },
-  },
+  // {
+  //   path: "/page1",
+  //   component: () => import("@/views/university/page1.vue"),
+  //   meta: { hidden: false },
+  // },
 
   {
     path: "/",
