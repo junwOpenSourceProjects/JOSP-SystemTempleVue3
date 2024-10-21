@@ -77,5 +77,8 @@
   "i18n-ally.localesPaths": [
     "src/lang"
   ],
-  "scss.lint.unknownAtRules": "ignore"
+  "scss.lint.unknownAtRules": "ignore",
+  "[vue]": {
+    "editor.defaultFormatter": "Vue.volar"
+  }
 }

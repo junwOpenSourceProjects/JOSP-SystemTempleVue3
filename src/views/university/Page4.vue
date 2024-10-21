@@ -280,23 +280,70 @@
           ></el-input>
         </el-form-item>
 
-        <!-- 动态生成状态单选按钮 -->
-        <template v-for="(status, key) in statuses" :key="key">
-          <el-form-item :label="status.label" :prop="key">
-            <el-radio-group v-model="formData[key]">
-              <el-radio :value="0">弱</el-radio>
-              <el-radio :value="1">中等</el-radio>
-              <el-radio :value="2">强</el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </template>
+        <!-- QS排名强弱和QS计算机排名强弱 -->
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="QS排名强弱" prop="statusQs">
+              <el-radio-group v-model="formData.statusQs">
+                <el-radio :value="0">弱</el-radio>
+                <el-radio :value="1">中等</el-radio>
+                <el-radio :value="2">强</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="QS计算机排名强弱" prop="statusQsCs">
+              <el-radio-group v-model="formData.statusQsCs">
+                <el-radio :value="0">弱</el-radio>
+                <el-radio :value="1">中等</el-radio>
+                <el-radio :value="2">强</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-        <el-form-item label="是否考虑" prop="consider">
-          <el-radio-group v-model="formData.consider">
-            <el-radio :value="1">考虑</el-radio>
-            <el-radio :value="0">不考虑</el-radio>
-          </el-radio-group>
-        </el-form-item>
+        <!-- US News排名强弱和US News计算机排名强弱 -->
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="US News排名强弱" prop="statusUsnews">
+              <el-radio-group v-model="formData.statusUsnews">
+                <el-radio :value="0">弱</el-radio>
+                <el-radio :value="1">中等</el-radio>
+                <el-radio :value="2">强</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="US News计算机排名强弱" prop="statusUsnewsCs">
+              <el-radio-group v-model="formData.statusUsnewsCs">
+                <el-radio :value="0">弱</el-radio>
+                <el-radio :value="1">中等</el-radio>
+                <el-radio :value="2">强</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <!-- 整体排名强弱和是否考虑 -->
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="整体排名强弱" prop="statusTotal">
+              <el-radio-group v-model="formData.statusTotal">
+                <el-radio :value="0">弱</el-radio>
+                <el-radio :value="1">中等</el-radio>
+                <el-radio :value="2">强</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="是否考虑" prop="consider">
+              <el-radio-group v-model="formData.consider">
+                <el-radio :value="1">考虑</el-radio>
+                <el-radio :value="0">不考虑</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
 
       <!-- 嵌套表格展示 -->
@@ -311,6 +358,9 @@
         />
       </el-table>
 
+      <!-- ECharts 图表 -->
+      <div ref="chartContainer" style="width: 100%; height: 400px"></div>
+
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="handleDrawerClose">取消</el-button>
@@ -322,9 +372,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, computed, onMounted } from "vue";
+import { ref, reactive, computed, onMounted, nextTick } from "vue";
 import axios from "axios";
 import { ElMessage } from "element-plus";
+import * as echarts from "echarts";
 import type { TableInstance, TableColumnCtx } from "element-plus";
 
 interface University {
@@ -435,6 +486,8 @@ const staticUniversity: University = {
 };
 
 const formRef = ref(null);
+const chartContainer = ref(null);
+let chartInstance: any;
 
 const formRules = {
   universityNameChinese: [
@@ -465,17 +518,21 @@ const formRules = {
 const openEditDrawer = (row: University) => {
   Object.assign(formData, row);
   editDrawerVisible.value = true;
+  fetchDrawerData(row.universityNameChinese);
 };
 
 const handleDrawerClose = () => {
   editDrawerVisible.value = false;
+  if (chartInstance) {
+    chartInstance.dispose();
+  }
 };
 
 const submitForm = () => {
   formRef.value.validate(async (valid: boolean) => {
     if (valid) {
       try {
-        const response = await axios.post(
+        const response = await axios.get(
           "/dev-api/status/insertOrUpdate",
           formData
         );
@@ -483,17 +540,14 @@ const submitForm = () => {
         if (response.data.success) {
           ElMessage.success("更新成功");
           editDrawerVisible.value = false;
-          fetchData();
+          fetchData(); // 刷新表格数据
         } else {
-          throw new Error(response.data.message || "更新失败");
+          ElMessage.error("更新失败");
         }
-      } catch (error: any) {
-        ElMessage.error(`更新失败: ${error.message}`);
+      } catch (error) {
+        ElMessage.error("提交失败");
         console.error(error);
       }
-    } else {
-      console.log("表单验证失败");
-      return false;
     }
   });
 };
@@ -527,6 +581,54 @@ const fetchData = async () => {
   } finally {
     loading.value = false;
   }
+};
+
+const fetchDrawerData = async (universityName: string) => {
+  try {
+    const response = await axios.post(
+      "/dev-api/status/drawerData",
+      universityName,
+      {
+        headers: {
+          "Content-Type": "text/plain",
+        },
+      }
+    );
+    renderChart(response.data);
+  } catch (error) {
+    ElMessage.error("获取图表数据失败");
+    console.error(error);
+  }
+};
+
+const renderChart = (data: any) => {
+  if (!chartContainer.value) return;
+
+  nextTick(() => {
+    chartInstance = echarts.init(chartContainer.value);
+
+    const option = {
+      title: {
+        text: "大学排名数据",
+      },
+      tooltip: {
+        trigger: "axis",
+      },
+      legend: {
+        data: ["QS", "QS计算机", "US News", "US News计算机"],
+      },
+      xAxis: {
+        type: "category",
+        data: data.years,
+      },
+      yAxis: {
+        type: "value",
+      },
+      series: [],
+    };
+
+    chartInstance.setOption(option);
+  });
 };
 
 const updateFilters = () => {
@@ -583,12 +685,12 @@ const toggleDataColumns = () => {
 };
 
 const hideRow = (row: University) => {
-  hiddenRowIds.value.add(row.id);
+  hiddenRowIds.value.add(row.id!);
 };
 
 const hideSelectedRows = () => {
   multipleSelection.value.forEach((row) => {
-    hiddenRowIds.value.add(row.id);
+    hiddenRowIds.value.add(row.id!);
   });
   clearSelection();
 };
@@ -599,7 +701,7 @@ const showAllRows = () => {
 
 const filteredData = computed(() => {
   let data = tableData.value;
-  data = data.filter((row) => !hiddenRowIds.value.has(row.id));
+  data = data.filter((row) => !hiddenRowIds.value.has(row.id!));
   if (searchName.value) {
     data = data.filter((row) =>
       row.universityNameChinese
