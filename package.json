@@ -2,7 +2,7 @@
   "name": "vue3-element-admin",
   "version": "2.11.5",
   "private": true,
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit & vite build",

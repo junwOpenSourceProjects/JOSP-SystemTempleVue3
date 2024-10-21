@@ -336,7 +336,7 @@ export default {
           rankVariant: searchForm.value.rankVariant,
         };
 
-        const response = await axios.get("/api/query/queryPartEcharts", {
+        const response = await axios.get("/dev-api/query/queryPartEcharts", {
           params,
         });
 

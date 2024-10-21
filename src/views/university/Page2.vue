@@ -164,7 +164,7 @@ export default {
         const queryString = new URLSearchParams(params).toString();
 
         const response = await fetch(
-          `/api/query/queryPartEcharts?${queryString}`,
+          `/dev-api/query/queryPartEcharts?${queryString}`,
           {
             method: "GET",
             headers: {

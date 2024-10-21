@@ -476,7 +476,7 @@ const submitForm = () => {
     if (valid) {
       try {
         const response = await axios.post(
-          "/api/status/insertOrUpdate",
+          "/dev-api/status/insertOrUpdate",
           formData
         );
 
@@ -514,7 +514,7 @@ const handleSearch = async () => {
 const fetchData = async () => {
   loading.value = true;
   try {
-    const response = await axios.get("/api/status/queryRankingStatus", {
+    const response = await axios.get("/dev-api/status/queryRankingStatus", {
       params: {
         name: searchName.value,
       },
