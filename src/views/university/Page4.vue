@@ -532,7 +532,7 @@ const submitForm = () => {
   formRef.value.validate(async (valid: boolean) => {
     if (valid) {
       try {
-        const response = await axios.get(
+        const response = await axios.post(
           "/dev-api/status/insertOrUpdate",
           formData
         );
@@ -615,16 +615,20 @@ const renderChart = (data: any) => {
         trigger: "axis",
       },
       legend: {
-        data: ["QS", "QS计算机", "US News", "US News计算机"],
+        data: data.legendData,
+        left: "right",
       },
       xAxis: {
         type: "category",
-        data: data.years,
+        data: data.years || [], // 确保有 x 轴数据
       },
       yAxis: {
         type: "value",
       },
-      series: [],
+      series: data.chatData.series.map((item: any, index: number) => ({
+        ...item,
+        name: data.legendData[index],
+      })),
     };
 
     chartInstance.setOption(option);
