@@ -16,27 +16,6 @@
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky"
   },
-  "lint-staged": {
-    "*.{js,ts}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.{cjs,json}": [
-      "prettier --write"
-    ],
-    "*.{vue,html}": [
-      "eslint --fix",
-      "prettier --write",
-      "stylelint --fix"
-    ],
-    "*.{scss,css}": [
-      "stylelint --fix",
-      "prettier --write"
-    ],
-    "*.md": [
-      "prettier --write"
-    ]
-  },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
     "@vueuse/core": "^11.1.0",
@@ -60,7 +39,9 @@
     "vue": "^3.5.12",
     "vue-echarts": "^7.0.3",
     "vue-i18n": "10.0.4",
-    "vue-router": "^4.4.5"
+    "vue-router": "^4.4.5",
+    "vue3-element-admin": "file:../JOSP-SystemTempleVue3",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@iconify-json/ep": "^1.2.1",

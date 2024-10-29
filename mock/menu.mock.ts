@@ -191,6 +191,20 @@ export default defineMock([
                 params: null,
               },
             },
+            {
+              path: "page5",
+              component: "university/Page5",
+              name: "page5",
+              meta: {
+                title: "page5",
+                icon: "api",
+                hidden: false,
+                roles: ["ADMIN"],
+                keepAlive: true,
+                alwaysShow: false,
+                params: null,
+              },
+            },
           ],
         },
         {
