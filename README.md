@@ -1,4 +1,4 @@
-# JOSP-SystemTempleVue3 - 大学查询系统与后台管理前端
+# JOSP-SystemTempleVue3
 
 ![Vue](https://img.shields.io/badge/Vue-3.5.12-4FC08D?style=flat-square&logo=vue.js)
 ![Vite](https://img.shields.io/badge/Vite-5.4.9-646CFF?style=flat-square&logo=vite)
@@ -7,13 +7,66 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.6.3-3178C6?style=flat-square&logo=typescript)
 ![License](https://img.shields.io/badge/License-AGPL--3.0-blue?style=flat-square)
 
-> 基于vue3-element-admin模板的大学查询与后台管理系统前端
+> **Vue3 + Element Plus 前端项目模板** - 一键创建新项目,统一框架结构
+
+## 🚀 从模板创建新项目
+
+### 方式1: GitHub网页操作
+
+1. 点击本页面上方的 **"Use this template"** 按钮
+2. 选择 **"Create a new repository"**
+3. 填写新项目名称(例如: `JOSP-NewProjectVue3`)
+4. 点击 **"Create repository"**
+5. 克隆新项目到本地:
+   ```bash
+   git clone https://github.com/你的用户名/JOSP-NewProjectVue3.git
+   cd JOSP-NewProjectVue3
+   ```
+
+### 方式2: GitHub CLI
+
+```bash
+# 创建新仓库
+gh repo create JOSP-NewProjectVue3 --template junwOpenSourceProjects/JOSP-SystemTempleVue3 --public
+
+# 克隆到本地
+gh repo clone 你的用户名/JOSP-NewProjectVue3
+cd JOSP-NewProjectVue3
+```
+
+## 📝 创建后修改项目信息
+
+### 1. 修改package.json
+
+```json
+{
+  "name": "JOSP-NewProjectVue3",
+  "version": "1.0.0"
+}
+```
+
+### 2. 修改项目标题
+
+编辑 `src/settings.ts`:
+```typescript
+export default {
+  title: "新项目名称",
+  version: "1.0.0"
+}
+```
+
+### 3. 修改API地址
+
+编辑 `.env.development`:
+```env
+VITE_APP_BASE_API=http://localhost:8088
+```
 
 ## 📖 项目简介
 
-JOSP-SystemTempleVue3 是基于vue3-element-admin模板开发的综合管理系统前端,集成大学信息查询、用户权限管理、系统配置等功能模块。
+JOSP-SystemTempleVue3 是一个Vue3前端项目模板,提供登录页面、首页、API封装、权限控制等基础功能,帮助你快速启动新项目开发。
 
-**后端项目**: [JOSP-SystemTempleJava](../JOSP-SystemTempleJava)
+**配套后端模板**: [JOSP-SystemTempleJava](https://github.com/junwOpenSourceProjects/JOSP-SystemTempleJava)
 
 **技术来源**: vue3-element-admin (有来开源组织)
 
