@@ -9,7 +9,7 @@ import Icons from "unplugin-icons/vite";
 import IconsResolver from "unplugin-icons/resolver";
 
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
-import mockDevServerPlugin from "vite-plugin-mock-dev-server";
+import * as mockDevServerPlugin from "vite-plugin-mock-dev-server";
 
 import UnoCSS from "unocss/vite";
 import { resolve } from "path";
@@ -45,7 +45,6 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       preprocessorOptions: {
         // 定义全局 SCSS 变量
         scss: {
-          javascriptEnabled: true,
           additionalData: `
             @use "@/styles/variables.scss" as *;
           `,
@@ -75,7 +74,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       // jsx、tsx语法支持
       vueJsx(),
       // MOCK 服务
-      env.VITE_MOCK_DEV_SERVER === "true" ? mockDevServerPlugin() : null,
+      env.VITE_MOCK_DEV_SERVER === "true" ? mockDevServerPlugin.default() : null,
       UnoCSS({
         hmrTopLevelAwait: false,
       }),
@@ -227,6 +226,9 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
           chunkFileNames: "js/[name].[hash].js",
           // 用于输出静态资源的命名，[ext]表示文件扩展名
           assetFileNames: (assetInfo: any) => {
+            if (!assetInfo.name) {
+              return "assets/[hash].[ext]";
+            }
             const info = assetInfo.name.split(".");
             let extType = info[info.length - 1];
             // console.log('文件信息', assetInfo.name)
