@@ -29,19 +29,11 @@ export interface LoginResult {
   /**
    * 访问token
    */
-  accessToken?: string;
+  token: string;
   /**
-   * 过期时间(单位：毫秒)
+   * token 前缀 (如 "Bearer ")
    */
-  expires?: number;
-  /**
-   * 刷新token
-   */
-  refreshToken?: string;
-  /**
-   * token 类型
-   */
-  tokenType?: string;
+  tokenHead: string;
 }
 
 /**

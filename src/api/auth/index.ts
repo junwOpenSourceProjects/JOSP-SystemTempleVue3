@@ -11,18 +11,10 @@ class AuthAPI {
    * @returns 登录结果
    */
   static login(data: LoginData) {
-    const formData = new FormData();
-    formData.append("username", data.username);
-    formData.append("password", data.password);
-    formData.append("captchaKey", data.captchaKey || "");
-    formData.append("captchaCode", data.captchaCode || "");
     return request<any, LoginResult>({
       url: `${AUTH_BASE_URL}/login`,
       method: "post",
-      data: formData,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+      data,
     });
   }
 
@@ -34,7 +26,17 @@ class AuthAPI {
   static logout() {
     return request({
       url: `${AUTH_BASE_URL}/logout`,
-      method: "delete",
+      method: "post",
+    });
+  }
+
+  /**
+   * 获取当前用户信息
+   */
+  static getUserInfo() {
+    return request<any, any>({
+      url: `${AUTH_BASE_URL}/me`,
+      method: "get",
     });
   }
 

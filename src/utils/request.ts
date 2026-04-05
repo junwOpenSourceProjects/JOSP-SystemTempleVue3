@@ -35,18 +35,18 @@ service.interceptors.response.use(
       return response;
     }
 
-    const { code, data, msg } = response.data;
+    const { code, data, message } = response.data;
     if (code === ResultEnum.SUCCESS) {
       return data;
     }
 
-    ElMessage.error(msg || "系统出错");
-    return Promise.reject(new Error(msg || "Error"));
+    ElMessage.error(message || "系统出错");
+    return Promise.reject(new Error(message || "Error"));
   },
   (error: any) => {
     // 异常处理
-    if (error.response.data) {
-      const { code, msg } = error.response.data;
+    if (error.response && error.response.data) {
+      const { code, message } = error.response.data;
       if (code === ResultEnum.TOKEN_INVALID) {
         ElMessageBox.confirm("当前页面已失效，请重新登录", "提示", {
           confirmButtonText: "确定",
@@ -59,11 +59,14 @@ service.interceptors.response.use(
           });
         });
       } else {
-        ElMessage.error(msg || "系统出错");
+        ElMessage.error(message || "系统出错");
       }
+    } else {
+      ElMessage.error(error.message || "网络请求失败");
     }
     return Promise.reject(error.message);
   }
+
 );
 
 // 导出 axios 实例
