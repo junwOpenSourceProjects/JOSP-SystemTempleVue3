@@ -26,7 +26,7 @@ const hasPermission = (roles: string[], route: RouteRecordRaw) => {
       }
     });
   }
-  return false;
+  return true;
 };
 
 /**

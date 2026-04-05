@@ -3,7 +3,7 @@
   <el-card>
     <template #header>
       <div class="title">
-        业绩柱状图
+        {{ $t('dashboard.barChartTitle') }}
         <el-tooltip effect="dark" content="点击试试下载" placement="bottom">
           <i-ep-download class="download" @click="downloadEchart" />
         </el-tooltip>
@@ -16,6 +16,10 @@
 
 <script setup lang="ts">
 import * as echarts from "echarts";
+import { DashboardAPI } from "@/api/dashboard";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const props = defineProps({
   id: {
@@ -38,7 +42,7 @@ const props = defineProps({
   },
 });
 
-const options = {
+const options: any = {
   grid: {
     left: "2%",
     right: "2%",
@@ -57,7 +61,7 @@ const options = {
   legend: {
     x: "center",
     y: "bottom",
-    data: ["收入", "毛利润", "收入增长率", "利润增长率"],
+    data: [t('dashboard.barChartName')],
     textStyle: {
       color: "#999",
     },
@@ -65,7 +69,7 @@ const options = {
   xAxis: [
     {
       type: "category",
-      data: ["浙江", "北京", "上海", "广东", "深圳"],
+      data: ["目录", "菜单", "按钮"],
       axisPointer: {
         type: "shadow",
       },
@@ -75,27 +79,17 @@ const options = {
     {
       type: "value",
       min: 0,
-      max: 10000,
-      interval: 2000,
+      minInterval: 1,
       axisLabel: {
-        formatter: "{value} ",
-      },
-    },
-    {
-      type: "value",
-      min: 0,
-      max: 100,
-      interval: 20,
-      axisLabel: {
-        formatter: "{value}%",
+        formatter: "{value} 个",
       },
     },
   ],
   series: [
     {
-      name: "收入",
+      name: t('dashboard.barChartName'),
       type: "bar",
-      data: [7000, 7100, 7200, 7300, 7400],
+      data: [],
       barWidth: 20,
       itemStyle: {
         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
@@ -103,37 +97,6 @@ const options = {
           { offset: 0.5, color: "#188df0" },
           { offset: 1, color: "#188df0" },
         ]),
-      },
-    },
-    {
-      name: "毛利润",
-      type: "bar",
-      data: [8000, 8200, 8400, 8600, 8800],
-      barWidth: 20,
-      itemStyle: {
-        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-          { offset: 0, color: "#25d73c" },
-          { offset: 0.5, color: "#1bc23d" },
-          { offset: 1, color: "#179e61" },
-        ]),
-      },
-    },
-    {
-      name: "收入增长率",
-      type: "line",
-      yAxisIndex: 1,
-      data: [60, 65, 70, 75, 80],
-      itemStyle: {
-        color: "#67C23A",
-      },
-    },
-    {
-      name: "利润增长率",
-      type: "line",
-      yAxisIndex: 1,
-      data: [70, 75, 80, 85, 90],
-      itemStyle: {
-        color: "#409EFF",
       },
     },
   ],
@@ -172,7 +135,13 @@ onMounted(() => {
     echarts.init(document.getElementById(props.id) as HTMLDivElement)
   );
 
-  chart.value.setOption(options);
+  DashboardAPI.getBarChart().then(res => {
+    if (res && res.series && res.series.length > 0) {
+      options.xAxis[0].data = res.labels;
+      options.series[0].data = res.series[0].data;
+      chart.value.setOption(options);
+    }
+  });
 
   // 大小自适应
   window.addEventListener("resize", () => {

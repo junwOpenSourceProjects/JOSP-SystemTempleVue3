@@ -9,7 +9,7 @@
           <div class="flex h-full items-center">
             <img
               class="w-20 h-20 mr-5 rounded-full"
-              :src="userStore.user.avatar + '?imageView2/1/w/80/h/80'"
+              :src="userStore.user.avatar"
             />
             <div>
               <p>{{ greetings }}</p>
@@ -109,7 +109,10 @@ defineOptions({
 
 import { useUserStore } from "@/store/modules/user";
 import { useTransition, TransitionPresets } from "@vueuse/core";
+import { DashboardAPI } from "@/api/dashboard";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const userStore = useUserStore();
 const date: Date = new Date();
 
@@ -130,37 +133,42 @@ const greetings = computed(() => {
 
 const duration = 5000;
 
-// 销售额
+// 销售额 / 总登录量
 const amount = ref(0);
 const amountOutput = useTransition(amount, {
   duration: duration,
   transition: TransitionPresets.easeOutExpo,
 });
-amount.value = 2000;
 
-// 访客数
+// 访客数 / 用户数
 const visitCount = ref(0);
 const visitCountOutput = useTransition(visitCount, {
   duration: duration,
   transition: TransitionPresets.easeOutExpo,
 });
-visitCount.value = 2000;
 
-// IP数
+// IP数 / 角色数
 const dauCount = ref(0);
 const dauCountOutput = useTransition(dauCount, {
   duration: duration,
   transition: TransitionPresets.easeOutExpo,
 });
-dauCount.value = 2000;
 
-// 订单量
+// 订单量 / 菜单数
 const orderCount = ref(0);
 const orderCountOutput = useTransition(orderCount, {
   duration: duration,
   transition: TransitionPresets.easeOutExpo,
 });
-orderCount.value = 2000;
+
+onMounted(() => {
+  DashboardAPI.getStats().then((res) => {
+    visitCount.value = res.userCount;
+    dauCount.value = res.roleCount;
+    orderCount.value = res.menuCount;
+    amount.value = res.loginCount;
+  });
+});
 
 // 右上角数量
 const statisticData = ref([
@@ -198,38 +206,38 @@ interface CardProp {
   iconClass: string;
 }
 // 卡片数量
-const cardData = ref<CardProp[]>([
+const cardData = computed<CardProp[]>(() => [
   {
-    title: "访客数",
+    title: t("dashboard.userCount"),
     tagType: "success",
-    tagText: "日",
+    tagText: "T",
     count: visitCountOutput,
-    dataDesc: "总访客数",
+    dataDesc: t("dashboard.userCountDesc"),
+    iconClass: "peoples",
+  },
+  {
+    title: t("dashboard.roleCount"),
+    tagType: "success",
+    tagText: "T",
+    count: dauCountOutput,
+    dataDesc: t("dashboard.roleCountDesc"),
+    iconClass: "role",
+  },
+  {
+    title: t("dashboard.loginCount"),
+    tagType: "primary",
+    tagText: "T",
+    count: amountOutput,
+    dataDesc: t("dashboard.loginCountDesc"),
     iconClass: "visit",
   },
   {
-    title: "IP数",
-    tagType: "success",
-    tagText: "日",
-    count: dauCountOutput,
-    dataDesc: "总IP数",
-    iconClass: "ip",
-  },
-  {
-    title: "销售额",
-    tagType: "primary",
-    tagText: "月",
-    count: amountOutput,
-    dataDesc: "总IP数",
-    iconClass: "money",
-  },
-  {
-    title: "订单量",
+    title: t("dashboard.menuCount"),
     tagType: "danger",
-    tagText: "季",
+    tagText: "T",
     count: orderCountOutput,
-    dataDesc: "总订单量",
-    iconClass: "order",
+    dataDesc: t("dashboard.menuCountDesc"),
+    iconClass: "menu",
   },
 ]);
 // 图表数据

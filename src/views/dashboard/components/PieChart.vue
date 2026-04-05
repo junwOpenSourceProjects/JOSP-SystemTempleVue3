@@ -1,13 +1,17 @@
 <!-- 饼图 -->
 <template>
   <el-card>
-    <template #header> 产品分类饼图 </template>
+    <template #header> {{ $t('dashboard.pieChartTitle') }} </template>
     <div :id="id" :class="className" :style="{ height, width }"></div>
   </el-card>
 </template>
 
 <script setup lang="ts">
 import * as echarts from "echarts";
+import { DashboardAPI } from "@/api/dashboard";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const props = defineProps({
   id: {
@@ -29,7 +33,7 @@ const props = defineProps({
     required: true,
   },
 });
-const options = {
+const options: any = {
   grid: {
     left: "2%",
     right: "2%",
@@ -44,7 +48,7 @@ const options = {
   },
   series: [
     {
-      name: "Nightingale Chart",
+      name: t('dashboard.pieChartName'),
       type: "pie",
       radius: [50, 130],
       center: ["50%", "50%"],
@@ -53,16 +57,11 @@ const options = {
         borderRadius: 1,
         color: function (params: any) {
           //自定义颜色
-          const colorList = ["#409EFF", "#67C23A", "#E6A23C", "#F56C6C"];
+          const colorList = ["#409EFF", "#F56C6C", "#E6A23C", "#67C23A"];
           return colorList[params.dataIndex];
         },
       },
-      data: [
-        { value: 26, name: "家用电器" },
-        { value: 27, name: "户外运动" },
-        { value: 24, name: "汽车用品" },
-        { value: 23, name: "手机数码" },
-      ],
+      data: [],
     },
   ],
 };
@@ -74,7 +73,12 @@ onMounted(() => {
     echarts.init(document.getElementById(props.id) as HTMLDivElement)
   );
 
-  chart.value.setOption(options);
+  DashboardAPI.getPieChart().then(res => {
+    if (res && res.series && res.series.length > 0) {
+      options.series[0].data = res.series[0].data;
+      chart.value.setOption(options);
+    }
+  });
 
   window.addEventListener("resize", () => {
     chart.value.resize();

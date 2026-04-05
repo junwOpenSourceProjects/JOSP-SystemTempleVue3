@@ -394,9 +394,11 @@ async function handleOpenAssignPermDialog(row: RolePageVO) {
     RoleAPI.getRoleMenuIds(roleId)
       .then((data) => {
         const checkedMenuIds = data;
-        checkedMenuIds.forEach((menuId) =>
-          permTreeRef.value!.setChecked(menuId, true, false)
-        );
+        nextTick(() => {
+          checkedMenuIds.forEach((menuId) =>
+            permTreeRef.value!.setChecked(menuId, true, false)
+          );
+        });
       })
       .finally(() => {
         loading.value = false;

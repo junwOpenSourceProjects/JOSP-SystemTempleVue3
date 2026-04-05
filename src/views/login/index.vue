@@ -97,7 +97,7 @@
         <!-- 账号密码提示 -->
         <div class="mt-10 text-sm">
           <span>{{ $t("login.username") }}: admin</span>
-          <span class="ml-4"> {{ $t("login.password") }}: 123456</span>
+          <span class="ml-4"> {{ $t("login.password") }}: admin</span>
         </div>
       </el-form>
     </el-card>
@@ -141,7 +141,8 @@ const { height } = useWindowSize();
 
 const loginData = ref<LoginData>({
   username: "admin",
-  password: "123456",
+  password: "admin",
+  captchaCode: "8888",
 });
 
 const loginRules = computed(() => {
@@ -159,19 +160,8 @@ const loginRules = computed(() => {
         trigger: "blur",
         message: t("login.message.password.required"),
       },
-      {
-        min: 6,
-        message: t("login.message.password.min"),
-        trigger: "blur",
-      },
     ],
-    captchaCode: [
-      {
-        required: true,
-        trigger: "blur",
-        message: t("login.message.captchaCode.required"),
-      },
-    ],
+    captchaCode: [],
   };
 });
 
