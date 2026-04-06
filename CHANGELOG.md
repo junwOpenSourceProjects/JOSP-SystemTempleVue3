@@ -31,7 +31,7 @@
 - 修改CURD示例编辑弹窗尺寸([#121](https://github.com/youlaitech/vue3-element-admin/pull/121)) [@cshaptx4869](https://github.com/cshaptx4869)
 - 统一注册vue插件([#122](https://github.com/youlaitech/vue3-element-admin/pull/122)) [@cshaptx4869](https://github.com/cshaptx4869)
 - 默认主题跟随系统([#128](https://github.com/youlaitech/vue3-element-admin/pull/128)) [@cshaptx4869](https://github.com/cshaptx4869)
-- 增加"scss.lint.unknownAtRules": "ignore"代码，解决style中使用@apply提示unknow at rules@apply提示问题([Gitee#22](https://gitee.com/youlaiorg/vue3-element-admin/pulls/22))  [@zjsy521](https://gitee.com/zjsy521)
+- 增加"scss.lint.unknownAtRules": "ignore"代码，解决style中使用@apply提示unknow at rules@apply提示问题([Gitee#22](https://github.com/junwOpenSourceProjects/JOSP-SystemTempleVue3/pulls/22))  [@zjsy521](https://gitee.com/zjsy521)
 
 ## 🐛 fix
 - 修复左侧布局移动端菜单弹出样式 ([#117](https://github.com/youlaitech/vue3-element-admin/pull/117))  [@cshaptx4869](https://github.com/cshaptx4869)

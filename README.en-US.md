@@ -3,7 +3,7 @@
     <img src="https://img.shields.io/badge/Vite-5.2.11-green.svg"/>
     <img src="https://img.shields.io/badge/Element Plus-2.7.5-blue.svg"/>
     <img src="https://img.shields.io/badge/license-MIT-green.svg"/>
-    <a href="https://gitee.com/youlaiorg" target="_blank">
+    <a href="https://github.com/junwOpenSourceProjects/JOSP-SystemTempleVue3" target="_blank">
         <img src="https://img.shields.io/badge/Author-有来开源组织-orange.svg"/>
     </a>
     <div align="center"> 中文 | <a href="./README.en-US.md">English</div>
@@ -19,7 +19,7 @@
 
 ## Introduction
 
-[vue3-element-admin](https://gitee.com/youlaiorg/vue3-element-admin) is a free and open-source admin template for backend management frontend, built with popular technologies such as Vue3, Vite5, TypeScript, Element-Plus, and Pinia (with accompanying [backend source code](https://gitee.com/youlaiorg/youlai-boot)).
+[vue3-element-admin](https://github.com/junwOpenSourceProjects/JOSP-SystemTempleVue3) is a free and open-source admin template for backend management frontend, built with popular technologies such as Vue3, Vite5, TypeScript, Element-Plus, and Pinia (with accompanying [backend source code](https://github.com/junwOpenSourceProjects/JOSP-SystemTempleVue3/youlai-boot)).
 
 
 
@@ -28,7 +28,7 @@
 
 - **Simple and Easy-to-use**: Upgraded version of [vue-element-admin](https://gitee.com/panjiachen/vue-element-admin) for Vue3, with minimal encapsulation and easy to get started.
 
-- **Data Interaction**: Support both local `Mock` data and remote API. Comes with [Java backend source code](https://gitee.com/youlaiorg/youlai-boot) and online API documentation.
+- **Data Interaction**: Support both local `Mock` data and remote API. Comes with [Java backend source code](https://github.com/junwOpenSourceProjects/JOSP-SystemTempleVue3/youlai-boot) and online API documentation.
 
 - **Permission Management**: Complete permission system for users, roles, menus, dictionaries, and departments.
 
@@ -48,8 +48,8 @@
 
 | Project | Gitee                                                        | Github                                                       | GitCode                                                      |
 | ---- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Frontend | [vue3-element-admin](https://gitee.com/youlaiorg/vue3-element-admin) | [vue3-element-admin](https://github.com/youlaitech/vue3-element-admin) | [vue3-element-admin](https://gitcode.net/youlai/vue3-element-admin) |
-| Backend | [youlai-boot](https://gitee.com/youlaiorg/youlai-boot)       | [youlai-boot](https://github.com/haoxianrui/youlai-boot.git) | [youlai-boot](https://gitcode.net/youlai/youlai-boot)        |
+| Frontend | [vue3-element-admin](https://github.com/junwOpenSourceProjects/JOSP-SystemTempleVue3) | [vue3-element-admin](https://github.com/youlaitech/vue3-element-admin) | [vue3-element-admin](https://gitcode.net/youlai/vue3-element-admin) |
+| Backend | [youlai-boot](https://github.com/junwOpenSourceProjects/JOSP-SystemTempleVue3/youlai-boot)       | [youlai-boot](https://github.com/haoxianrui/youlai-boot.git) | [youlai-boot](https://gitcode.net/youlai/youlai-boot)        |
 
 ## Environment Setup
 
@@ -63,7 +63,7 @@
 
 ```bash
 # Clone the repository
-git clone https://gitee.com/youlaiorg/vue3-element-admin.git
+git clone https://github.com/junwOpenSourceProjects/JOSP-SystemTempleVue3.git
 
 # Change directory
 cd vue3-element-admin
@@ -110,7 +110,7 @@ The project supports both online API and local mock API. By default, it uses the
 
 > If you have a basic understanding of Java development, follow these steps to convert online API to local backend API and set up a full-stack development environment.
 
-1. Get the backend source code based on `Java` and `SpringBoot` from [youlai-boot](https://gitee.com/youlaiorg/youlai-boot.git).
+1. Get the backend source code based on `Java` and `SpringBoot` from [youlai-boot](https://github.com/junwOpenSourceProjects/JOSP-SystemTempleVue3/youlai-boot.git).
 2. Follow the instructions in the backend project's README.md to set up the local environment.
 3. Modify the value of `VITE_APP_API_URL` in the `.env.development` file to `http://localhost:8989`, replacing it with the backend API URL.
 
@@ -132,7 +132,7 @@ The project supports both online API and local mock API. By default, it uses the
 
 - **Other issues**
 
-  If you have any other issues or suggestions, please open an [issue](https://gitee.com/youlaiorg/vue3-element-admin/issues/new).
+  If you have any other issues or suggestions, please open an [issue](https://github.com/junwOpenSourceProjects/JOSP-SystemTempleVue3/issues/new).
 
 ## Project Documentation
 
