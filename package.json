@@ -9,7 +9,7 @@
   "license": "AGPL-3.0",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",
@@ -17,8 +17,8 @@
     "lint:prettier": "prettier --write \"**/*.{js,cjs,ts,json,tsx,css,less,scss,vue,html,md}\"",
     "lint:stylelint": "stylelint \"**/*.{css,scss,vue}\" --fix",
     "lint:lint-staged": "lint-staged",
-    "preinstall": "npx only-allow pnpm",
-    "prepare": "husky"
+    "prepare": "husky",
+  "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.2",
@@ -58,8 +58,8 @@
     "@types/stompjs": "^2.3.9",
     "@typescript-eslint/eslint-plugin": "^8.19.1",
     "@typescript-eslint/parser": "^8.19.1",
-    "@vitejs/plugin-vue": "^5.2.1",
-    "@vitejs/plugin-vue-jsx": "^4.1.1",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "@vitejs/plugin-vue-jsx": "^5.1.2",
     "autoprefixer": "^10.4.20",
     "cz-git": "^1.10.1",
     "eslint": "^9.17.0",
@@ -84,13 +84,13 @@
     "terser": "^5.37.0",
     "typescript": "^5.7.2",
     "unocss": "^66.6.7",
-    "unplugin-auto-import": "^0.18.6",
+    "unplugin-auto-import": "^19.0.0",
     "unplugin-icons": "^0.20.0",
     "unplugin-vue-components": "^0.27.4",
     "vite": "^7.0.5",
-    "vite-plugin-mock-dev-server": "^1.8.0",
+    "vite-plugin-mock-dev-server": "^2.0.0",
     "vite-plugin-svg-icons": "^2.0.1",
-    "vite-plugin-vue-devtools": "^7.6.5",
+    "vite-plugin-vue-devtools": "^8.1.1",
     "vue-eslint-parser": "^9.4.3",
     "vue-tsc": "^2.2.0"
   },

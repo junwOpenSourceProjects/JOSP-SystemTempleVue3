@@ -495,9 +495,9 @@ export default defineMock([
               },
             },
             {
-              path: "/function/websocket",
+              path: "websocket",
               component: "demo/websocket",
-              name: "/function/websocket",
+              name: "Websocket",
               meta: {
                 title: "Websocket",
                 icon: "",

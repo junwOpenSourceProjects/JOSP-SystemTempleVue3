@@ -38,3 +38,12 @@ declare const __APP_INFO__: {
   };
   buildTimestamp: number;
 };
+
+/**
+ * vue-i18n 全局注入的 $t 方法类型
+ */
+declare module "@vue/runtime-core" {
+  interface ComponentCustomProperties {
+    $t(key: string, values?: Record<string, unknown>): string;
+  }
+}

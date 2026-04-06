@@ -9,7 +9,7 @@ import Icons from "unplugin-icons/vite";
 import IconsResolver from "unplugin-icons/resolver";
 
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
-import * as mockDevServerPlugin from "vite-plugin-mock-dev-server";
+import { mockDevServerPlugin } from "vite-plugin-mock-dev-server";
 
 import UnoCSS from "unocss/vite";
 import { resolve } from "path";
@@ -21,8 +21,8 @@ import {
   devDependencies,
 } from "./package.json";
 
-// https://devtools-next.vuejs.org/
-import VueDevTools from "vite-plugin-vue-devtools";
+// VueDevTools 已禁用（与 vite 7 存在兼容性问题）
+// import VueDevTools from "vite-plugin-vue-devtools";
 
 /** 平台的名称、版本、运行所需的`node`版本、依赖、构建时间的类型提示 */
 const __APP_INFO__ = {
@@ -74,7 +74,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       // jsx、tsx语法支持
       vueJsx(),
       // MOCK 服务
-      env.VITE_MOCK_DEV_SERVER === "true" ? mockDevServerPlugin.default() : null,
+      env.VITE_MOCK_DEV_SERVER === "true" ? mockDevServerPlugin() : null,
       UnoCSS({
         hmrTopLevelAwait: false,
       }),
@@ -97,9 +97,8 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
         },
         // 是否在 vue 模板中自动导入
         vueTemplate: true,
-        // 指定自动导入函数TS类型声明文件路径 (false:关闭自动生成)
+        // 禁用自动生成 dts（类型声明已手动维护在 src/typings/auto-imports.d.ts）
         dts: false,
-        // dts: "src/typings/auto-imports.d.ts",
       }),
       Components({
         resolvers: [
@@ -113,9 +112,8 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
         ],
         // 指定自定义组件位置(默认:src/components)
         dirs: ["src/components", "src/**/components"],
-        // 指定自动导入组件TS类型声明文件路径 (false:关闭自动生成)
+        // 禁用自动生成 dts（类型声明已手动维护在 src/typings/components.d.ts）
         dts: false,
-        // dts: "src/typings/components.d.ts",
       }),
       Icons({
         // 自动安装图标库

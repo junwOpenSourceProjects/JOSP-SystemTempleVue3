@@ -137,11 +137,15 @@ export interface RouteVO {
   /**
    * 子路由列表
    */
-  children: RouteVO[];
+  children?: RouteVO[];
   /**
    * 组件路径
    */
   component?: string;
+  /**
+   * 菜单类型：CATALOG-目录 MENU-菜单 BUTTON-按钮 EXTLINK-外链
+   */
+  type?: MenuTypeEnum;
   meta?: Meta;
   /**
    * 路由名称

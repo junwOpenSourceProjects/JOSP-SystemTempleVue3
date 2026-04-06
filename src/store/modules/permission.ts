@@ -3,6 +3,7 @@ import { constantRoutes } from "@/router";
 import { store } from "@/store";
 import MenuAPI from "@/api/menu";
 import { RouteVO } from "@/api/menu/model";
+import { MenuTypeEnum } from "@/enums/MenuTypeEnum";
 
 const modules = import.meta.glob("../../views/**/**.vue");
 const Layout = () => import("@/layout/index.vue");
@@ -39,6 +40,11 @@ const hasPermission = (roles: string[], route: RouteRecordRaw) => {
 const filterAsyncRoutes = (routes: RouteVO[], roles: string[]) => {
   const asyncRoutes: RouteRecordRaw[] = [];
   routes.forEach((route) => {
+    // 过滤按钮类型菜单（按钮类型不需要生成路由）
+    if ((route as any).type === MenuTypeEnum.BUTTON) {
+      return;
+    }
+
     const tmpRoute = { ...route } as RouteRecordRaw; // 深拷贝 route 对象 避免污染
     if (hasPermission(roles, tmpRoute)) {
       // 如果是顶级目录，替换为 Layout 组件

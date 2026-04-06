@@ -1,27 +1,32 @@
 import request from "@/utils/request";
 
 export interface DashboardStats {
-  userCount: number;
-  menuCount: number;
-  roleCount: number;
-  loginCount: number;
+  totalUsers: number;
+  totalOrders: number;
+  totalRevenue: number;
+  growthRate: number;
+  todayVisits: number;
+  yesterdayVisits: number;
 }
 
-export interface ChartSeries {
-  name: string;
-  type: string;
-  data: any[];
+export interface WeeklyVisits {
+  xAxis: string[];
+  visits: number[];
+  pageViews: number[];
 }
 
-export interface ChartData {
-  labels: string[];
-  series: ChartSeries[];
+export interface CategoryRatio {
+  categories: string[];
+  values: number[];
 }
 
-export class DashboardAPI {
-  /**
-   * 获取顶部统计数据
-   */
+export interface MonthlySales {
+  months: string[];
+  sales: number[];
+  target: number[];
+}
+
+class DashboardAPI {
   static getStats() {
     return request<any, DashboardStats>({
       url: "/api/v1/dashboard/stats",
@@ -29,23 +34,26 @@ export class DashboardAPI {
     });
   }
 
-  /**
-   * 获取饼图数据
-   */
-  static getPieChart() {
-    return request<any, ChartData>({
-      url: "/api/v1/dashboard/chart/pie",
+  static getWeeklyVisits() {
+    return request<any, WeeklyVisits>({
+      url: "/api/v1/dashboard/weekly-visits",
       method: "get",
     });
   }
 
-  /**
-   * 获取柱状图数据
-   */
-  static getBarChart() {
-    return request<any, ChartData>({
-      url: "/api/v1/dashboard/chart/bar",
+  static getCategoryRatio() {
+    return request<any, CategoryRatio>({
+      url: "/api/v1/dashboard/category-ratio",
+      method: "get",
+    });
+  }
+
+  static getMonthlySales() {
+    return request<any, MonthlySales>({
+      url: "/api/v1/dashboard/monthly-sales",
       method: "get",
     });
   }
 }
+
+export default DashboardAPI;
