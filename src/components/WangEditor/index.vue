@@ -20,7 +20,9 @@
 </template>
 
 <script setup lang="ts">
-import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
+import * as WangEditor from "@wangeditor/editor-for-vue";
+const Editor = WangEditor.Editor;
+const Toolbar = WangEditor.Toolbar;
 
 // API 引用
 import FileAPI from "@/api/file";
