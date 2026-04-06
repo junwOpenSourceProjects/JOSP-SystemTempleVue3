@@ -1,7 +1,7 @@
 import request from "@/utils/request";
 
 export interface TableListItem {
-  id: number;
+  id: string;
   title: string;
   author: string;
   pageviews: number;
@@ -37,7 +37,7 @@ export class DemoAPI {
   /**
    * 获取表格记录
    */
-  static getTableItem(id: number) {
+  static getTableItem(id: string) {
     return request<any, TableListItem>({
       url: `/api/v1/demo/table/${id}`,
       method: "get",
@@ -58,7 +58,7 @@ export class DemoAPI {
   /**
    * 更新表格记录
    */
-  static updateTableItem(id: number, data: TableForm) {
+  static updateTableItem(id: string, data: TableForm) {
     return request({
       url: `/api/v1/demo/table/${id}`,
       method: "put",
@@ -69,7 +69,7 @@ export class DemoAPI {
   /**
    * 删除表格记录
    */
-  static deleteTableItem(id: number) {
+  static deleteTableItem(id: string) {
     return request({
       url: `/api/v1/demo/table/${id}`,
       method: "delete",

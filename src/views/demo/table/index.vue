@@ -169,7 +169,7 @@ const dialogTitle = ref("新增");
 const formLoading = ref(false);
 const formRef = ref<FormInstance>();
 const isEdit = ref(false);
-const editId = ref<number | null>(null);
+const editId = ref<string | null>(null);
 
 const formData = reactive<TableForm>({
   title: "",
