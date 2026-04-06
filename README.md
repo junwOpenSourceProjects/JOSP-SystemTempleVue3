@@ -1,10 +1,10 @@
 # JOSP-SystemTempleVue3
 
 ![Vue](https://img.shields.io/badge/Vue-3.5.32-4FC08D?style=flat-square&logo=vue.js)
-![Vite](https://img.shields.io/badge/Vite-6.0.7-646CFF?style=flat-square&logo=vite)
-![Element Plus](https://img.shields.io/badge/Element%20Plus-2.13.6-409EFF?style=flat-square&logo=element)
-![Pinia](https://img.shields.io/badge/Pinia-3.0.4-FFD859?style=flat-square)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.7.3-3178C6?style=flat-square&logo=typescript)
+![Vite](https://img.shields.io/badge/Vite-7.0.5-646CFF?style=flat-square&logo=vite)
+![Element Plus](https://img.shields.io/badge/Element%20Plus-2.13.5-409EFF?style=flat-square&logo=element)
+![Pinia](https://img.shields.io/badge/Pinia-3.0.3-FFD859?style=flat-square)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.7.2-3178C6?style=flat-square&logo=typescript)
 ![License](https://img.shields.io/badge/License-AGPL--3.0-blue?style=flat-square)
 
 > **Vue3 + Element Plus 前端项目模板** - 基于最新 Vue 3.5 的现代化后台系统底座。
