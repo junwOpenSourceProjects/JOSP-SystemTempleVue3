@@ -1,17 +1,17 @@
 <template>
-  <el-breadcrumb class="flex-y-center">
-    <transition-group
-      enter-active-class="animate__animated animate__fadeInRight"
-    >
-      <el-breadcrumb-item v-for="(item, index) in breadcrumbs" :key="item.path">
+  <el-breadcrumb class="app-breadcrumb" separator="/">
+    <transition-group enter-active-class="animate__animated animate__fadeInRight">
+      <el-breadcrumb-item
+        v-for="(item, index) in breadcrumbs"
+        :key="item.path"
+      >
         <span
-          v-if="
-            item.redirect === 'noredirect' || index === breadcrumbs.length - 1
-          "
-          class="color-gray-400"
-          >{{ translateRouteTitle(item.meta.title) }}</span
+          v-if="item.redirect === 'noredirect' || index === breadcrumbs.length - 1"
+          class="breadcrumb-no-link"
         >
-        <a v-else @click.prevent="handleLink(item)">
+          {{ translateRouteTitle(item.meta.title) }}
+        </span>
+        <a v-else class="breadcrumb-link" @click.prevent="handleLink(item)">
           {{ translateRouteTitle(item.meta.title) }}
         </a>
       </el-breadcrumb-item>
@@ -26,6 +26,7 @@ import router from "@/router";
 import { translateRouteTitle } from "@/utils/i18n";
 
 const currentRoute = useRoute();
+
 const pathCompile = (path: string) => {
   const { params } = currentRoute;
   const toPath = compile(path);
@@ -41,7 +42,7 @@ function getBreadcrumb() {
   const first = matched[0];
   if (!isDashboard(first)) {
     matched = [
-      { path: "/dashboard", meta: { title: "dashboard" } } as any,
+      { path: "/dashboard", meta: { title: "首页" } } as any,
     ].concat(matched);
   }
   breadcrumbs.value = matched.filter((item) => {
@@ -55,8 +56,7 @@ function isDashboard(route: RouteLocationMatched) {
     return false;
   }
   return (
-    name.toString().trim().toLocaleLowerCase() ===
-    "Dashboard".toLocaleLowerCase()
+    name.toString().trim().toLocaleLowerCase() === "Dashboard".toLocaleLowerCase()
   );
 }
 
@@ -89,9 +89,47 @@ onBeforeMount(() => {
 </script>
 
 <style lang="scss" scoped>
-// 覆盖 element-plus 的样式
-.el-breadcrumb__inner,
-.el-breadcrumb__inner a {
-  font-weight: 400 !important;
+$font-ui: 'DM Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$text-primary: #222222;
+$text-secondary: #45515e;
+$text-muted: #8e8e93;
+$brand-blue: #1456f0;
+$border-color: #e5e7eb;
+
+.app-breadcrumb {
+  display: flex;
+  align-items: center;
+
+  :deep(.el-breadcrumb__item) {
+    .el-breadcrumb__inner {
+      font-family: $font-ui;
+      font-size: 14px;
+      font-weight: 400;
+    }
+  }
+
+  .breadcrumb-link {
+    font-family: $font-ui;
+    font-size: 14px;
+    font-weight: 400;
+    color: $text-secondary;
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $brand-blue;
+    }
+  }
+
+  .breadcrumb-no-link {
+    font-family: $font-ui;
+    font-size: 14px;
+    font-weight: 500;
+    color: $text-primary;
+  }
+
+  :deep(.el-breadcrumb__separator) {
+    color: #d1d5db;
+  }
 }
 </style>

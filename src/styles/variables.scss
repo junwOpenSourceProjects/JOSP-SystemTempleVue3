@@ -1,20 +1,23 @@
 /** 全局SCSS变量 */
 
 :root {
-  --menu-background: #304156;
-  --menu-text: #bfcbd9;
-  --menu-active-text: var(--el-menu-active-color);
-  --menu-hover: #263445;
-  --sidebar-logo-background: #2d3748;
+  // MiniMax Design System - Brand Blue theme (#1456f0)
+  --menu-background: #1456f0;
+  --menu-text: rgba(255, 255, 255, 0.85);
+  --menu-active-text: #ffffff;
+  --menu-hover: rgba(255, 255, 255, 0.15);
+  --sidebar-logo-background: #0d3ecc;
+  --sidebar-border-right: rgba(255, 255, 255, 0.1);
 }
 
 /** 暗黑主题 */
 html.dark {
-  --menu-background: var(--el-bg-color-overlay);
-  --menu-text: #fff;
-  --menu-active-text: var(--el-menu-active-color);
-  --menu-hover: rgb(0 0 0 / 20%);
-  --sidebar-logo-background: rgb(0 0 0 / 20%);
+  --menu-background: #1456f0;
+  --menu-text: rgba(255, 255, 255, 0.85);
+  --menu-active-text: #ffffff;
+  --menu-hover: rgba(255, 255, 255, 0.15);
+  --sidebar-logo-background: #0d3ecc;
+  --sidebar-border-right: rgba(255, 255, 255, 0.1);
 }
 
 $menu-background: var(--menu-background); // 菜单背景色

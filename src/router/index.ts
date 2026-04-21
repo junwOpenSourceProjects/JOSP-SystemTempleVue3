@@ -22,12 +22,6 @@ export const constantRoutes: RouteRecordRaw[] = [
     component: () => import("@/views/login/index.vue"),
     meta: { hidden: true },
   },
-  //测试引入静态页面
-  // {
-  //   path: "/page1",
-  //   component: () => import("@/views/university/page1.vue"),
-  //   meta: { hidden: false },
-  // },
 
   {
     path: "/",
@@ -42,6 +36,24 @@ export const constantRoutes: RouteRecordRaw[] = [
         meta: { title: "首页", icon: "homepage", affix: true },
       },
       {
+        path: "personal",
+        component: () => import("@/views/personal/index.vue"),
+        name: "Personal",
+        meta: { title: "个人中心", icon: "user" },
+      },
+      {
+        path: "notice",
+        component: () => import("@/views/notice/index.vue"),
+        name: "Notice",
+        meta: { title: "通知公告", icon: "message" },
+      },
+      {
+        path: "notice/edit",
+        component: () => import("@/views/notice/edit.vue"),
+        name: "NoticeEdit",
+        meta: { title: "编辑公告", hidden: true },
+      },
+      {
         path: "401",
         component: () => import("@/views/error-page/401.vue"),
         meta: { hidden: true },
@@ -53,58 +65,6 @@ export const constantRoutes: RouteRecordRaw[] = [
       },
     ],
   },
-
-  // 外部链接
-  // {
-  //   path: "/external-link",
-  //   component: Layout,
-  //   children: [ {
-  //       component: () => import("@/views/external-link/index.vue"),
-  //       path: "https://www.cnblogs.com/haoxianrui/",
-  //       meta: { title: "外部链接", icon: "link" },
-  //     },
-  //   ],
-  // },
-  // 多级嵌套路由
-  /* {
-         path: '/nested',
-         component: Layout,
-         redirect: '/nested/level1/level2',
-         name: 'Nested',
-         meta: {title: '多级菜单', icon: 'nested'},
-         children: [
-             {
-                 path: 'level1',
-                 component: () => import('@/views/nested/level1/index.vue'),
-                 name: 'Level1',
-                 meta: {title: '菜单一级'},
-                 redirect: '/nested/level1/level2',
-                 children: [
-                     {
-                         path: 'level2',
-                         component: () => import('@/views/nested/level1/level2/index.vue'),
-                         name: 'Level2',
-                         meta: {title: '菜单二级'},
-                         redirect: '/nested/level1/level2/level3',
-                         children: [
-                             {
-                                 path: 'level3-1',
-                                 component: () => import('@/views/nested/level1/level2/level3/index1.vue'),
-                                 name: 'Level3-1',
-                                 meta: {title: '菜单三级-1'}
-                             },
-                             {
-                                 path: 'level3-2',
-                                 component: () => import('@/views/nested/level1/level2/level3/index2.vue'),
-                                 name: 'Level3-2',
-                                 meta: {title: '菜单三级-2'}
-                             }
-                         ]
-                     }
-                 ]
-             },
-         ]
-     }*/
 ];
 
 /**

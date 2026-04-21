@@ -64,7 +64,7 @@ service.interceptors.response.use(
     } else {
       ElMessage.error(error.message || "网络请求失败");
     }
-    return Promise.reject(error.message);
+    return Promise.reject(error);
   }
 
 );

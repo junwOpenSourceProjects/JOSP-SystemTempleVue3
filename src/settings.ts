@@ -18,7 +18,8 @@ const defaultSettings: AppSettings = {
   theme: mediaQueryList.matches ? ThemeEnum.DARK : ThemeEnum.LIGHT,
   size: SizeEnum.DEFAULT,
   language: LanguageEnum.ZH_CN,
-  themeColor: "#409EFF",
+  // MiniMax Design System theme color
+  themeColor: "#1456f0", // Brand Blue
   watermarkEnabled: false,
   watermarkContent: pkg.name,
 };

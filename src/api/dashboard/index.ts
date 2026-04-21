@@ -1,56 +1,59 @@
 import request from "@/utils/request";
-
-export interface DashboardStats {
-  totalUsers: number;
-  totalOrders: number;
-  totalRevenue: number;
-  growthRate: number;
-  todayVisits: number;
-  yesterdayVisits: number;
-}
-
-export interface WeeklyVisits {
-  xAxis: string[];
-  visits: number[];
-  pageViews: number[];
-}
-
-export interface CategoryRatio {
-  categories: string[];
-  values: number[];
-}
-
-export interface MonthlySales {
-  months: string[];
-  sales: number[];
-  target: number[];
-}
+import type {
+  UserStats,
+  VisitTrend,
+  DeptDistribution,
+  SystemInfo,
+  ActivityLog,
+} from "./model";
 
 class DashboardAPI {
-  static getStats() {
-    return request<any, DashboardStats>({
+  /**
+   * 获取用户统计
+   */
+  static getUserStats() {
+    return request<any, UserStats>({
       url: "/api/v1/dashboard/stats",
       method: "get",
     });
   }
 
-  static getWeeklyVisits() {
-    return request<any, WeeklyVisits>({
-      url: "/api/v1/dashboard/weekly-visits",
+  /**
+   * 获取访问趋势
+   */
+  static getVisitTrend() {
+    return request<any, VisitTrend>({
+      url: "/api/v1/dashboard/visit-trend",
       method: "get",
     });
   }
 
-  static getCategoryRatio() {
-    return request<any, CategoryRatio>({
-      url: "/api/v1/dashboard/category-ratio",
+  /**
+   * 获取部门分布
+   */
+  static getDeptDistribution() {
+    return request<any, DeptDistribution>({
+      url: "/api/v1/dashboard/dept-distribution",
       method: "get",
     });
   }
 
-  static getMonthlySales() {
-    return request<any, MonthlySales>({
-      url: "/api/v1/dashboard/monthly-sales",
+  /**
+   * 获取系统信息
+   */
+  static getSystemInfo() {
+    return request<any, SystemInfo>({
+      url: "/api/v1/dashboard/system-info",
+      method: "get",
+    });
+  }
+
+  /**
+   * 获取操作日志
+   */
+  static getActivityLogs() {
+    return request<any, ActivityLog[]>({
+      url: "/api/v1/dashboard/activity-logs",
       method: "get",
     });
   }
