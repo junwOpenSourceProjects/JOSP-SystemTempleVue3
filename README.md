@@ -7,7 +7,7 @@
 | 分类 | 技术 | 版本 |
 |------|------|------|
 | 核心框架 | Vue 3 | 3.4+ (Composition API) |
-| 构建工具 | Vite | 8+ |
+| 构建工具 | Vite | 8.0.9 |
 | 语言 | TypeScript | 5+ |
 | UI 组件库 | Element Plus | 2.4+ |
 | 状态管理 | Pinia | 2.1+ |
