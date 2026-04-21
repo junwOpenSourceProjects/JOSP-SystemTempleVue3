@@ -1,270 +1,200 @@
-# JOSP-SystemTempleVue3
+# JOSP-System 前端
 
-![Vue](https://img.shields.io/badge/Vue-3.5.32-4FC08D?style=flat-square&logo=vue.js)
-![Vite](https://img.shields.io/badge/Vite-6.0.7-646CFF?style=flat-square&logo=vite)
-![Element Plus](https://img.shields.io/badge/Element%20Plus-2.13.6-409EFF?style=flat-square&logo=element)
-![Pinia](https://img.shields.io/badge/Pinia-3.0.4-FFD859?style=flat-square)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.7.3-3178C6?style=flat-square&logo=typescript)
-![License](https://img.shields.io/badge/License-AGPL--3.0-blue?style=flat-square)
-
-> **JOSP 前端系统模板** - 基于 Vue 3.5 + Vite + Element Plus + Pinia 的现代化后台管理系统。
-
----
-
-## 配套后端模板
-
-- **Java 版本**: [JOSP-SystemTempleJava](https://github.com/junwOpenSourceProjects/JOSP-SystemTempleJava)
-
----
-
-## 系统架构
-
-```mermaid
-graph TB
-    subgraph Client["客户端层"]
-        Browser["浏览器"]
-    end
-
-    subgraph Build["构建层"]
-        Vite["Vite 6.x<br/>HMR 热更新"]
-        TypeScript["TypeScript 5.7<br/>类型检查"]
-    end
-
-    subgraph Framework["框架层"]
-        Vue3["Vue 3.5<br/>Composition API"]
-        Pinia["Pinia 3.x<br/>状态管理"]
-        Router["Vue Router 4.x<br/>动态路由"]
-    end
-
-    subgraph UI["UI 层"]
-        ElementPlus["Element Plus 2.x<br/>UI 组件库"]
-        UnoCSS["UnoCSS<br/>原子化 CSS"]
-        Iconify["Iconify<br/>图标系统"]
-    end
-
-    subgraph Request["请求层"]
-        Axios["Axios<br/>HTTP 客户端"]
-        Interceptor["请求/响应拦截器<br/>Token 自动注入"]
-    end
-
-    subgraph Backend["后端交互"]
-        API["RESTful API<br/>/api/v1/*"]
-        JWT["JWT Token<br/>无状态认证"]
-    end
-
-    Browser --> Vite
-    Vite --> Vue3
-    Vue3 --> Pinia
-    Vue3 --> Router
-    Vue3 --> ElementPlus
-    Vue3 --> UnoCSS
-    Vue3 --> Iconify
-    Vue3 --> Axios
-    Axios --> Interceptor
-    Interceptor --> JWT
-    Interceptor --> API
-
-    style Client fill:#e1f5ff
-    style Build fill:#fff9c4
-    style Framework fill:#e8f5e9
-    style UI fill:#f3e5ff
-    style Request fill:#fff3e0
-    style Backend fill:#ffecce
-```
-
----
+企业级后台管理系统前端，基于 Vue 3 + Vite + TypeScript 构建，采用 Element Plus 组件库和 ECharts 数据可视化。
 
 ## 技术栈
 
-| 技术 | 版本 | 说明 |
+| 分类 | 技术 | 版本 |
 |------|------|------|
-| Vue | 3.5.32 | 渐进式前端框架 |
-| Vite | 6.0.7 | 下一代构建工具 |
-| Element Plus | 2.13.6 | UI 组件库 |
-| Pinia | 3.0.4 | 状态管理 |
-| TypeScript | 5.7.3 | 类型支持 |
-| Axios | 1.7.9 | HTTP 客户端 |
-| UnoCSS | 0.65.x | 原子化 CSS 引擎 |
-| Vue Router | 4.x | 路由管理 |
-| @iconify/vue | 4.x | 图标组件 |
-
----
+| 核心框架 | Vue 3 | 3.4+ (Composition API) |
+| 构建工具 | Vite | 8+ |
+| 语言 | TypeScript | 5+ |
+| UI 组件库 | Element Plus | 2.4+ |
+| 状态管理 | Pinia | 2.1+ |
+| 路由 | Vue Router | 4+ |
+| HTTP 客户端 | Axios | 1.6+ |
+| 可视化 | ECharts | 5.5+ |
+| CSS 方案 | UnoCSS | 0.58+ |
 
 ## 项目结构
 
 ```
-JOSP-SystemTempleVue3/
-├── src/
-│   ├── api/                      # API 接口层
-│   │   ├── auth/                 # 认证相关接口
-│   │   ├── system/               # 系统管理接口
-│   │   │   ├── user.ts
-│   │   │   ├── role.ts
-│   │   │   ├── menu.ts
-│   │   │   └── dict.ts
-│   │   └── demo/                 # 示例接口
-│   │       └── index.ts
-│   │
-│   ├── views/                    # 页面视图
-│   │   ├── dashboard/           # 首页
-│   │   ├── login/               # 登录页
-│   │   ├── system/              # 系统管理
-│   │   │   ├── user/            # 用户管理
-│   │   │   ├── role/            # 角色管理
-│   │   │   ├── menu/            # 菜单管理
-│   │   │   └── dict/            # 字典管理
-│   │   ├── demo/                # 示例组件
-│   │   │   ├── table/           # 综合表格
-│   │   │   ├── form/            # 高级表单
-│   │   │   ├── curd/            # CRUD 示例
-│   │   │   └── ...
-│   │   └── error-page/          # 错误页面
-│   │
-│   ├── layout/                   # 布局组件
-│   │   ├── components/          # 布局子组件
-│   │   │   ├── Sidebar/         # 侧边栏
-│   │   │   ├── Navbar/          # 顶部导航
-│   │   │   └── TagsView/        # 标签页
-│   │   └── index.vue
-│   │
-│   ├── router/                   # 路由配置
-│   │   └── index.ts             # 静态+动态路由
-│   │
-│   ├── store/                    # 状态管理
-│   │   └── modules/
-│   │       ├── user.ts          # 用户状态+Token
-│   │       ├── permission.ts    # 权限+路由
-│   │       └── dict.ts          # 字典缓存
-│   │
-│   ├── utils/                    # 工具函数
-│   │   ├── request.ts          # Axios 封装（拦截器）
-│   │   └── auth.ts             # Token 管理
-│   │
-│   ├── components/              # 公共组件
-│   ├── directives/              # 自定义指令
-│   ├── plugins/                 # 插件配置
-│   ├── styles/                  # 全局样式
-│   ├── typings/                 # TypeScript 类型声明
-│   ├── lang/                    # 国际化
-│   │
-│   ├── App.vue                  # 根组件
-│   └── main.ts                 # 入口文件
-│
-├── .env.development             # 开发环境变量
-├── .env.production              # 生产环境变量
-├── package.json
-└── vite.config.ts
+src/
+├── api/                  # API 接口层
+│   ├── auth/             # 认证相关 API
+│   ├── dashboard/        # 看板 API
+│   ├── notice/           # 通知公告 API
+│   └── system/           # 系统管理 API
+├── components/          # 公共组件
+├── composables/          # 组合式函数
+├── layout/               # 布局组件
+├── router/               # 路由配置
+├── store/                # Pinia 状态管理
+│   └── modules/          # Store 模块
+├── styles/               # 全局样式
+├── utils/                # 工具函数
+└── views/                # 页面视图
+    ├── dashboard/        # 数据看板
+    ├── login/            # 登录页
+    ├── notice/           # 通知公告
+    ├── personal/         # 个人中心
+    └── system/           # 系统管理
+        ├── user/         # 用户管理
+        ├── role/         # 角色管理
+        ├── menu/         # 菜单管理
+        └── dept/         # 部门管理
 ```
 
----
+## 功能模块
 
-## 页面路由
-
-```mermaid
-graph TB
-    subgraph Layout["后台布局"]
-        Sidebar["左侧菜单"]
-        Navbar["顶部导航"]
-        TagsView["标签页"]
-        Main["主内容区"]
-    end
-
-    subgraph Routes["路由页面"]
-        Dashboard["/dashboard<br/>首页"]
-        System["/system/*<br/>系统管理"]
-        Demo["/demo/*<br/>示例组件"]
-    end
-
-    subgraph SystemPages["系统管理"]
-        User["user<br/>用户管理"]
-        Role["role<br/>角色管理"]
-        Menu["menu<br/>菜单管理"]
-        Dict["dict<br/>字典管理"]
-    end
-
-    subgraph DemoPages["示例组件"]
-        Table["table<br/>综合表格"]
-        Form["form<br/>高级表单"]
-        Curd["curd<br/>增删改查示例"]
-    end
-
-    Sidebar --> Routes
-    Routes --> System --> SystemPages
-    Routes --> Demo --> DemoPages
-    Dashboard --> Main
-
-    style Layout fill:#e1f5ff
-    style Routes fill:#fff4e6
-    style SystemPages fill:#f3e5ff
-    style DemoPages fill:#e8f5e9
-```
-
----
-
-## 功能特性
-
-### 已完成功能
-
-| 模块 | 功能 |
-|------|------|
-| **首页** | 数据统计展示、手动刷新功能 |
-| **综合表格** | 分页列表、搜索过滤、弹窗编辑、新增/删除确认 |
-| **用户管理** | 用户列表、状态切换 |
-| **角色管理** | 角色列表、权限配置 |
-| **菜单管理** | 树形菜单、动态路由 |
-| **字典管理** | 字典类型、字典数据（含 Redis 缓存） |
-| **认证** | JWT Token 登录、退出、Token 刷新 |
-
-### 认证流程
-
-```mermaid
-sequenceDiagram
-    participant User as 用户
-    participant Frontend as Vue3
-    participant Backend as Spring Boot
-    participant Redis as Redis
-
-    User->>Frontend: 输入用户名密码
-    Frontend->>Backend: POST /api/v1/auth/login
-    Backend->>Backend: 验证用户&生成JWT
-    Backend->>Redis: 缓存Token
-    Backend-->>Frontend: 返回Token
-    Frontend->>Frontend: 存储Token到Pinia
-    Frontend->>Backend: 请求带上Authorization
-    Backend->>Redis: 验证Token
-    Backend-->>Frontend: 返回数据
-```
-
----
+| 页面 | 路径 | 说明 |
+|------|------|------|
+| 登录 | `/login` | 用户登录、验证码 |
+| 管理看板 | `/dashboard` | ECharts 图表、数据卡片 |
+| 个人中心 | `/personal` | 个人信息、密码修改 |
+| 用户管理 | `/system/user` | 用户 CRUD、分配角色 |
+| 角色管理 | `/system/role` | 角色 CRUD、分配菜单 |
+| 菜单管理 | `/system/menu` | 菜单 CRUD、图标选择 |
+| 部门管理 | `/system/dept` | 部门树形 CRUD |
+| 字典管理 | `/system/dict` | 字典类型和数据 |
+| 登录日志 | `/system/login-log` | 登录日志分页查询 |
+| 操作日志 | `/system/oper-log` | 操作日志分页查询 |
+| 通知公告 | `/notice` | 公告列表、编辑、发布 |
+| 系统监控 | `/system/monitor` | 服务器、Redis、DB 状态 |
 
 ## 快速开始
 
+### 环境要求
+- Node.js 18+
+- pnpm 8+
+
+### 安装依赖
+
 ```bash
-# 1. 安装依赖
 pnpm install
+```
 
-# 2. 启动开发服务器
+### 开发模式
+
+```bash
 pnpm dev
+```
 
-# 3. 构建生产版本
+访问 `http://localhost:5173`
+
+### 生产构建
+
+```bash
 pnpm build
 ```
 
----
+构建产物输出到 `dist/` 目录。
+
+## 设计规范
+
+本项目遵循 [DESIGN.md](DESIGN.md) 中定义的设计系统：
+
+### 品牌色
+- **主色（品牌蓝）**: `#1456f0`
+- **成功**: `#10b981`
+- **警告**: `#f59e0b`
+- **危险**: `#ef4444`
+
+### 字体
+- **中文**: `DM Sans`, `Outfit`
+- **英文/数字**: `Outfit`
+- **代码**: `JetBrains Mono`, `Fira Code`
+
+### 圆角
+- 按钮/输入框: `9999px`（胶囊状）
+- 卡片: `12px`
+- 弹窗: `16px`
+
+### 阴影
+- 卡片: `0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06)`
+- 悬浮: `rgba(20,85,240,0.16)`（品牌蓝发光）
+
+## 页面截图布局
+
+```
+┌─────────────────────────────────────────────────────┐
+│  [侧边栏菜单]  │          顶部导航栏                  │
+│               │  ┌─────────────────────────────────┐ │
+│  ○ Dashboard  │  │  面包屑 / 用户信息 / 退出         │ │
+│  ○ 系统管理    │  └─────────────────────────────────┘ │
+│    - 用户     │  ┌─────────────────────────────────┐ │
+│    - 角色     │  │                                 │ │
+│    - 菜单     │  │         主内容区域               │ │
+│    - 部门     │  │                                 │ │
+│  ○ 日志      │  │                                 │ │
+│  ○ 通知     │  │                                 │ │
+│  ○ 监控     │  └─────────────────────────────────┘ │
+└─────────────────────────────────────────────────────┘
+```
+
+## 系统架构图
+
+```mermaid
+graph TB
+    subgraph 浏览器
+        A[Vue 3 App<br/>Vue Router<br/>Pinia Store]
+    end
+
+    subgraph API 层
+        B[Axios<br/>请求拦截器<br/>响应拦截器]
+    end
+
+    subgraph 后端服务
+        C[Spring Boot<br/>Port 8081]
+        D[(MySQL)]
+        E[(Redis)]
+    end
+
+    A -->|HTTPS| B
+    B -->|HTTP| C
+    C --> D
+    C --> E
+
+    style A fill:#e1f5ff,stroke:#1456f0
+    style C fill:#fff3e1,stroke:#f0a020
+    style D fill:#fff3e1,stroke:#f0a020
+    style E fill:#fff3e1,stroke:#f0a020
+```
+
+## 前端路由流程
+
+```mermaid
+flowchart TD
+    A[打开应用] --> B{已登录?}
+    B -->|否| C[跳转 /login]
+    B -->|是| D[获取用户信息<br/>获取路由菜单]
+    C --> E[登录成功]
+    E --> D
+    D --> F[动态生成路由]
+    F --> G[渲染侧边栏<br/>渲染主内容]
+    G --> H[访问页面]
+```
 
 ## 环境变量
 
-`.env.development`:
-```env
-# API 代理前缀
-VITE_APP_BASE_API = '/dev-api'
+| 变量 | 说明 | 默认值 |
+|------|------|--------|
+| `VITE_APP_TITLE` | 应用标题 | JOSP-System |
+| `VITE_API_BASE_URL` | API 基础路径 | `/api/v1` |
 
-# 后端接口地址
-VITE_APP_API_URL = http://localhost:8081
+## 常用命令
+
+```bash
+pnpm dev      # 开发服务器
+pnpm build    # 生产构建
+pnpm preview  # 预览构建产物
+pnpm lint     # ESLint 检查
 ```
 
----
+## 贡献指南
 
-## 许可证
-
-本项目采用 **AGPL-3.0** 许可证 - 详情见 [LICENSE](LICENSE) 文件。
+1. Fork 本仓库
+2. 创建特性分支 `git checkout -b feat/your-feature`
+3. 提交更改 `git commit -m 'feat: add some feature'`
+4. 推送到分支 `git push origin feat/your-feature`
+5. 创建 Pull Request
