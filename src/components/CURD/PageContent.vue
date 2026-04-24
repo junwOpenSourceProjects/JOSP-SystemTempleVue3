@@ -496,7 +496,6 @@ import {
   type UploadUserFile,
 } from "element-plus";
 import ExcelJS from "exceljs";
-import { reactive, ref } from "vue";
 import type { IContentConfig, IObject, IOperatData } from "./types";
 
 // 定义接收的属性
@@ -525,7 +524,7 @@ const defaultToolbar = props.contentConfig.defaultToolbar ?? [
 ];
 // 表格列
 const cols = ref(
-  props.contentConfig.cols.map((col) => {
+  props.contentConfig.cols.map((col: IObject) => {
     col.initFn && col.initFn(col);
     if (col.show === undefined) {
       col.show = true;
@@ -614,7 +613,7 @@ function handleDelete(id?: number | string) {
 
 // 导出表单
 const fields: string[] = [];
-cols.value.forEach((item) => {
+  cols.value.forEach((item: IObject) => {
   if (item.prop !== undefined) {
     fields.push(item.prop);
   }
@@ -668,7 +667,7 @@ function handleExports() {
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet(sheetname);
   const columns: Partial<ExcelJS.Column>[] = [];
-  cols.value.forEach((col) => {
+  cols.value.forEach((col: IObject) => {
     if (col.label && col.prop && exportsFormData.fields.includes(col.prop)) {
       columns.push({ header: col.label, key: col.prop });
     }
@@ -676,7 +675,7 @@ function handleExports() {
   worksheet.columns = columns;
   if (exportsFormData.origin === ExportsOriginEnum.REMOTE) {
     if (props.contentConfig.exportsAction) {
-      props.contentConfig.exportsAction(lastFormData).then((res) => {
+      props.contentConfig.exportsAction(lastFormData).then((res: IObject[]) => {
         worksheet.addRows(res);
         workbook.xlsx
           .writeBuffer()
@@ -734,7 +733,7 @@ function handleDownloadTemplate() {
   if (typeof importTemplate === "string") {
     window.open(importTemplate);
   } else if (typeof importTemplate === "function") {
-    importTemplate().then((response) => {
+      importTemplate().then((response: any) => {
       const fileData = response.data;
       const fileName = decodeURI(
         response.headers["content-disposition"].split(";")[1].split("=")[1]
@@ -924,7 +923,7 @@ let filterParams: IObject = {};
 function handleFilterChange(newFilters: any) {
   const filters: IObject = {};
   for (const key in newFilters) {
-    const col = cols.value.find((col) => {
+    const col = cols.value.find((col: IObject) => {
       return col.columnKey === key || col["column-key"] === key;
     });
     if (col && col.filterJoin !== undefined) {
@@ -962,7 +961,7 @@ function fetchPageData(formData: IObject = {}, isRestart = false) {
           }
         : formData
     )
-    .then((data) => {
+    .then((data: any) => {
       if (showPagination) {
         if (props.contentConfig.parseData) {
           data = props.contentConfig.parseData(data);
@@ -982,7 +981,7 @@ fetchPageData();
 // 导出Excel
 function exportPageData(formData: IObject = {}) {
   if (props.contentConfig.exportAction) {
-    props.contentConfig.exportAction(formData).then((response) => {
+    props.contentConfig.exportAction(formData).then((response: any) => {
       const fileData = response.data;
       const fileName = decodeURI(
         response.headers["content-disposition"].split(";")[1].split("=")[1]

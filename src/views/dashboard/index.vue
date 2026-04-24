@@ -222,7 +222,7 @@ const deptPieOption = computed<EChartsOption>(() => ({
       emphasis: {
         label: { show: true, fontSize: 13, fontWeight: "bold", color: "#18181b" },
       },
-      data: deptData.value.names.map((name, index) => ({
+      data: deptData.value.names.map((name: string, index: number) => ({
         value: deptData.value.values[index],
         name,
         itemStyle: {

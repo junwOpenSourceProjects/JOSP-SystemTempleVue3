@@ -1,6 +1,5 @@
 /* eslint-disable */
 /* prettier-ignore */
-// @ts-nocheck
 // 自动导入函数全局声明（手动维护，禁止自动生成覆盖）
 
 /// <reference types="vite/client" />
@@ -52,33 +51,31 @@ declare global {
   const withDirectives: typeof import('vue')['withDirectives']
   const withMemo: typeof import('vue')['withMemo']
 
-  // Vue types
-  const App: typeof import('vue')['App']
-  const Component: typeof import('vue')['Component']
-  const ComponentPublicInstance: typeof import('vue')['ComponentPublicInstance']
-  const Directive: typeof import('vue')['Directive']
-  const DirectiveBinding: typeof import('vue')['DirectiveBinding']
-  const Ref: typeof import('vue')['Ref']
-  const MaybeRef: typeof import('vue')['MaybeRef']
-  const MaybeRefOrGetter: typeof import('vue')['MaybeRefOrGetter']
-  const RefUnwrapBailTypes: typeof import('vue')['RefUnwrapBailTypes']
-  const ShallowRef: typeof import('vue')['ShallowRef']
-  const ToRef: typeof import('vue')['ToRef']
-  const ToRefs: typeof import('vue')['ToRefs']
-  const UnwrapRef: typeof import('vue')['UnwrapRef']
-  const WritableComputedRef: typeof import('vue')['WritableComputedRef']
-  const ComputedRef: typeof import('vue')['ComputedRef']
-  const ReactiveEffectOptions: typeof import('vue')['ReactiveEffectOptions']
-  const EffectScope: typeof import('vue')['EffectScope']
-  const本部: typeof import('vue')['本部']
-  const PropType: typeof import('vue')['PropType']
-  const VNode: typeof import('vue')['VNode']
-  const ExtractPropTypes: typeof import('vue')['ExtractPropTypes']
-  const ExtractPublicPropTypes: typeof import('vue')['ExtractPublicPropTypes']
-  const ComponentOptions: typeof import('vue')['ComponentOptions']
-  const ComponentCustomProperties: typeof import('vue')['ComponentCustomProperties']
-  const ComponentCustomOptions: typeof import('vue')['ComponentCustomOptions']
-  const DirectiveArguments: typeof import('vue')['DirectiveArguments']
+  // Vue types (declared as type, not const, to avoid conflicts with import type)
+  type App = typeof import('vue')['App']
+  type Component = typeof import('vue')['Component']
+  type ComponentPublicInstance = typeof import('vue')['ComponentPublicInstance']
+  type Directive = typeof import('vue')['Directive']
+  type DirectiveBinding = typeof import('vue')['DirectiveBinding']
+  type Ref = typeof import('vue')['Ref']
+  type MaybeRef = typeof import('vue')['MaybeRef']
+  type MaybeRefOrGetter = typeof import('vue')['MaybeRefOrGetter']
+  type RefUnwrapBailTypes = typeof import('vue')['RefUnwrapBailTypes']
+  type ShallowRef = typeof import('vue')['ShallowRef']
+  type ToRef = typeof import('vue')['ToRef']
+  type ToRefs = typeof import('vue')['ToRefs']
+  type UnwrapRef = typeof import('vue')['UnwrapRef']
+  type WritableComputedRef = typeof import('vue')['WritableComputedRef']
+  type ComputedRef = typeof import('vue')['ComputedRef']
+  type ReactiveEffectOptions = typeof import('vue')['ReactiveEffectOptions']
+  type PropType = typeof import('vue')['PropType']
+  type VNode = typeof import('vue')['VNode']
+  type ExtractPropTypes = typeof import('vue')['ExtractPropTypes']
+  type ExtractPublicPropTypes = typeof import('vue')['ExtractPublicPropTypes']
+  type ComponentOptions = typeof import('vue')['ComponentOptions']
+  type ComponentCustomProperties = typeof import('vue')['ComponentCustomProperties']
+  type ComponentCustomOptions = typeof import('vue')['ComponentCustomOptions']
+  type DirectiveArguments = typeof import('vue')['DirectiveArguments']
 
   // Element Plus
   const ElForm: typeof import('element-plus/es')['ElForm']

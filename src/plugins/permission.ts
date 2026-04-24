@@ -111,7 +111,7 @@ export function hasAuth(
 
   return typeof value === "string"
     ? auths.includes(value)
-    : auths.some((perm) => {
+    : auths.some((perm: string) => {
         return value.includes(perm);
       });
 }

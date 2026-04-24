@@ -73,7 +73,7 @@ const mixLeftMenus = computed(() => permissionStore.mixLeftMenus); // 混合布�
 
 watch(
   () => activeTopMenuPath.value,
-  (newVal) => {
+  (newVal: string) => {
     permissionStore.setMixLeftMenus(newVal);
   },
   {

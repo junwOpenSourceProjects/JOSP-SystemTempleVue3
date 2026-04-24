@@ -84,8 +84,7 @@
 
 <script setup lang="ts">
 import type { FormInstance, FormRules } from "element-plus";
-import { reactive, ref, watch, watchEffect } from "vue";
-import { IObject, IPageForm } from "./types";
+import type { IObject, IPageForm } from "./types";
 
 // 定义接收的属性
 const props = withDefaults(defineProps<IPageForm>(), {
@@ -106,7 +105,7 @@ for (const item of formItems) {
     prepareFuncs.push(() => {
       watch(
         () => formData[item.prop],
-        (newValue, oldValue) => {
+        (newValue: unknown, oldValue: unknown) => {
           item.watch && item.watch(newValue, oldValue, formData, formItems);
         }
       );

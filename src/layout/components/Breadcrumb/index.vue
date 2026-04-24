@@ -6,7 +6,7 @@
         :key="item.path"
       >
         <span
-          :class="{ 'is-link': index < breadcrumbs.length - 1 }"
+          :class="{ 'is-link': Number(index) < breadcrumbs.length - 1 }"
           @click="handleLink(item)"
         >
           {{ translateRouteTitle(item.meta?.title) }}

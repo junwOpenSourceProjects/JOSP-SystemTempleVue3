@@ -77,7 +77,7 @@ const goToFirstMenu = (menus: RouteRecordRaw[]) => {
 // 初始化顶部菜单
 onMounted(() => {
   mixTopMenus.value = permissionStore.routes.filter(
-    (item) => !item.meta || !item.meta.hidden
+    (item: RouteRecordRaw) => !item.meta || !item.meta.hidden
   );
 });
 </script>

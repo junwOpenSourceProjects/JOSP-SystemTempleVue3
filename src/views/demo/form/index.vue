@@ -156,7 +156,7 @@ const rules = reactive<FormRules>({
 
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
-  await formEl.validate((valid, fields) => {
+  await formEl.validate((valid: boolean, fields: Record<string, boolean>) => {
     if (valid) {
       ElMessage.success("表单校验通过，准备提交...");
     } else {

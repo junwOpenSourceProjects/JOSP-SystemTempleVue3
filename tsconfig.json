@@ -17,9 +17,14 @@
     "ignoreDeprecations": "6.0",
     "allowJs": true,
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "vue": ["node_modules/vue/dist/vue.d.ts"],
+      "@vue/runtime-core": ["node_modules/.pnpm/@vue+runtime-dom@3.5.33/node_modules/@vue/runtime-core/dist/runtime-core.d.ts"],
+      "@vue/runtime-dom": ["node_modules/.pnpm/@vue+runtime-dom@3.5.33/node_modules/@vue/runtime-dom/dist/runtime-dom.d.ts"],
+      "@vue/reactivity": ["node_modules/.pnpm/@vue+runtime-dom@3.5.33/node_modules/@vue/reactivity/dist/reactivity.d.ts"],
+      "@vue/shared": ["node_modules/.pnpm/@vue+runtime-dom@3.5.33/node_modules/@vue/shared/dist/shared.d.ts"]
     },
-    "types": ["vite/client", "element-plus/global"],
+    "types": ["vite/client", "element-plus/global", "vue"],
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true
   },

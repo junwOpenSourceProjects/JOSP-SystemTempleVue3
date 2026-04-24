@@ -73,7 +73,7 @@ const filterAsyncRoutes = (routes: RouteVO[], roles: string[]) => {
       }
 
       if (tmpRoute.children) {
-        tmpRoute.children = filterAsyncRoutes(route.children, roles);
+        tmpRoute.children = filterAsyncRoutes(route.children ?? [], roles);
       }
 
       asyncRoutes.push(tmpRoute);
@@ -136,7 +136,7 @@ export const usePermissionStore = defineStore("permission", () => {
    * @param topMenuPath - Path of the active top-level menu
    */
   function setMixLeftMenus(topMenuPath: string) {
-    const matchedItem = routes.value.find((item) => item.path === topMenuPath);
+    const matchedItem = routes.value.find((item: RouteRecordRaw) => item.path === topMenuPath);
     if (matchedItem && matchedItem.children) {
       mixLeftMenus.value = matchedItem.children;
     }

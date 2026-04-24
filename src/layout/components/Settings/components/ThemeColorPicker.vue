@@ -29,7 +29,7 @@ const colorPresets = [
 
 const currentColor = ref(props.modelValue);
 
-watch(currentColor, (newValue) => {
+watch(currentColor, (newValue: string) => {
   emit("update:modelValue", newValue);
 });
 </script>

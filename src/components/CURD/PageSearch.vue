@@ -51,7 +51,7 @@
               </el-tag>
               <template v-if="inputTagMap[item.prop].inputVisible">
                 <el-input
-                  :ref="(el) => (inputTagMap[item.prop].inputRef = el)"
+                  :ref="(el: unknown) => (inputTagMap[item.prop].inputRef = el)"
                   v-model="inputTagMap[item.prop].inputValue"
                   v-bind="inputTagMap[item.prop].inputAttrs"
                   @keyup.enter="handleInputConfirm(item.prop)"
@@ -115,7 +115,6 @@
 
 <script setup lang="ts">
 import type { FormInstance } from "element-plus";
-import { reactive, ref } from "vue";
 import type { IObject, ISearchConfig } from "./types";
 
 // 定义接收的属性
@@ -176,7 +175,7 @@ for (const item of formItems) {
           ? inputTagMap[item.prop].data.join(item.attrs.join)
           : inputTagMap[item.prop].data;
       },
-      set(value) {
+      set(value: string) {
         // resetFields时会被调用
         inputTagMap[item.prop].data =
           typeof item.attrs?.join === "string"

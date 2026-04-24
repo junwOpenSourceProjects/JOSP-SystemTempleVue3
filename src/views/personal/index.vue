@@ -108,7 +108,7 @@ const handleAvatarUpload = async (options: { file: File }) => {
 // Submit profile form
 const submitProfile = async () => {
   if (!profileFormRef.value) return;
-  await profileFormRef.value.validate(async (valid) => {
+  await profileFormRef.value.validate(async (valid: boolean) => {
     if (valid) {
       profileLoading.value = true;
       try {
@@ -127,7 +127,7 @@ const submitProfile = async () => {
 // Submit password form
 const submitPassword = async () => {
   if (!passwordFormRef.value) return;
-  await passwordFormRef.value.validate(async (valid) => {
+  await passwordFormRef.value.validate(async (valid: boolean) => {
     if (valid) {
       passwordLoading.value = true;
       try {

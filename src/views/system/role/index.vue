@@ -440,7 +440,7 @@ function togglePermTree() {
     });
   }
 }
-watch(permKeywords, (val) => {
+watch(permKeywords, (val: string) => {
   permTreeRef.value!.filter(val);
 });
 

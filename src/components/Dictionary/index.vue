@@ -17,6 +17,7 @@
 
 <script setup lang="ts">
 import DictAPI from "@/api/dict";
+import type { Ref } from "vue";
 
 const props = defineProps({
   /**
@@ -45,18 +46,18 @@ const options: Ref<OptionType[]> = ref([]); // 字典下拉数据源
 
 const selectedValue = ref<string | number | undefined>();
 
-watch([options, () => props.modelValue], ([newOptions, newModelValue]) => {
+watch([options, () => props.modelValue], ([newOptions, newModelValue]: [unknown[], unknown]) => {
   if (newOptions.length === 0) return; // 下拉数据源加载未完成不回显
   if (newModelValue == undefined) {
     selectedValue.value = undefined;
     return;
   }
-  if (typeof newOptions[0].value === "number") {
+  if (typeof (newOptions[0] as OptionType).value === "number") {
     selectedValue.value = Number(newModelValue);
-  } else if (typeof newOptions[0].value === "string") {
+  } else if (typeof (newOptions[0] as OptionType).value === "string") {
     selectedValue.value = String(newModelValue);
   } else {
-    selectedValue.value = newModelValue;
+    selectedValue.value = newModelValue as string | number;
   }
 });
 

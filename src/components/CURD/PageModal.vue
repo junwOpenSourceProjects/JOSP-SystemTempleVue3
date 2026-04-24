@@ -246,7 +246,6 @@
 <script setup lang="ts">
 import { useThrottleFn } from "@vueuse/core";
 import type { FormInstance, FormRules } from "element-plus";
-import { nextTick, reactive, ref, watch, watchEffect } from "vue";
 import type { IModalConfig, IObject } from "./types";
 
 // 定义接收的属性
@@ -274,7 +273,7 @@ for (const item of formItems) {
     prepareFuncs.push(() => {
       watch(
         () => formData[item.prop],
-        (newValue, oldValue) => {
+        (newValue: unknown, oldValue: unknown) => {
           item.watch && item.watch(newValue, oldValue, formData, formItems);
         }
       );

@@ -53,13 +53,13 @@ const fileList = ref([] as UploadUserFile[]);
 watch(
   () => props.modelValue,
   (newVal: string[]) => {
-    const filePaths = fileList.value.map((file) => file.url);
+    const filePaths = fileList.value.map((file: UploadFile) => file.url);
     // 监听modelValue文件集合值未变化时，跳过赋值
     if (
       filePaths.length > 0 &&
       filePaths.length === newVal.length &&
-      filePaths.every((x) => newVal.some((y) => y === x)) &&
-      newVal.every((y) => filePaths.some((x) => x === y))
+      filePaths.every((x: string) => newVal.some((y: string) => y === x)) &&
+      newVal.every((y: string) => filePaths.some((x: string) => x === y))
     ) {
       return;
     }
@@ -82,7 +82,7 @@ async function handleUpload(options: UploadRequestOptions): Promise<any> {
 
   // 上传成功需手动替换文件路径为远程URL，否则图片地址为预览地址 blob:http://
   const fileIndex = fileList.value.findIndex(
-    (file) => file.uid == (options.file as any).uid
+    (file: UploadFile) => file.uid == (options.file as any).uid
   );
 
   fileList.value.splice(fileIndex, 1, {
@@ -92,7 +92,7 @@ async function handleUpload(options: UploadRequestOptions): Promise<any> {
 
   emit(
     "update:modelValue",
-    fileList.value.map((file) => file.url)
+    fileList.value.map((file: UploadFile) => file.url)
   );
 }
 
@@ -107,7 +107,7 @@ function handleRemove(removeFile: UploadFile) {
       // 删除成功回调
       emit(
         "update:modelValue",
-        fileList.value.map((file) => file.url)
+        fileList.value.map((file: UploadFile) => file.url)
       );
     });
   }

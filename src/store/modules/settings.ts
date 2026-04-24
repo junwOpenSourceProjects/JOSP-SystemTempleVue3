@@ -1,6 +1,7 @@
 import defaultSettings from "@/settings";
 import { ThemeEnum } from "@/enums/ThemeEnum";
 import Color from "color";
+import type { Ref } from "vue";
 
 type SettingsValue = boolean | string;
 
@@ -36,7 +37,7 @@ export const useSettingsStore = defineStore("setting", () => {
 
   watch(
     [theme, themeColor],
-    ([newTheme, newThemeColor], [oldTheme, oldThemeColor]) => {
+    ([newTheme, newThemeColor]: [string, string], [oldTheme, oldThemeColor]: [string, string]) => {
       if (newTheme !== oldTheme) {
         if (newTheme === ThemeEnum.DARK) {
           document.documentElement.classList.add("dark");

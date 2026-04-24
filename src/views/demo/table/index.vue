@@ -247,7 +247,7 @@ const handleUpdate = async (row: TableListItem) => {
 
 const handleSubmit = async () => {
   if (!formRef.value) return;
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async (valid: boolean) => {
     if (!valid) return;
 
     formLoading.value = true;

@@ -356,7 +356,7 @@ const pageData = ref<UserPageVO[]>(); // 用户分页数据
 const deptList = ref<OptionType[]>(); // 部门下拉数据源
 const roleList = ref<OptionType[]>(); // 角色下拉数据源
 
-watch(dateTimeRange, (newVal) => {
+watch(dateTimeRange, (newVal: [string, string]) => {
   if (newVal) {
     queryParams.startTime = newVal[0];
     queryParams.endTime = newVal[1];
@@ -444,7 +444,7 @@ function resetPassword(row: { [key: string]: any }) {
       confirmButtonText: "确定",
       cancelButtonText: "取消",
     }
-  ).then(({ value }) => {
+  ).then(({ value }: { value: string }) => {
     if (!value || value.length < 6) {
       // 检查密码是否为空或少于6位
       ElMessage.warning("密码至少需要6位字符，请重新输入");

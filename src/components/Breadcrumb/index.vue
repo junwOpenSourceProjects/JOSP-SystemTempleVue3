@@ -75,7 +75,7 @@ function handleLink(item: any) {
 
 watch(
   () => currentRoute.path,
-  (path) => {
+  (path: string) => {
     if (path.startsWith("/redirect/")) {
       return;
     }
