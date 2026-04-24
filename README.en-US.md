@@ -1,161 +1,311 @@
 <div align="center">
     <img src="https://img.shields.io/badge/Vue-3.4.27-brightgreen.svg"/>
     <img src="https://img.shields.io/badge/Vite-5.2.11-green.svg"/>
-    <img src="https://img.shields.io/badge/Element Plus-2.7.5-blue.svg"/>
+    <img src="https://img.shields.io/badge/Element%20Plus-2.7.5-blue.svg"/>
     <img src="https://img.shields.io/badge/license-MIT-green.svg"/>
     <a href="https://github.com/junwOpenSourceProjects/JOSP-SystemTempleVue3" target="_blank">
         <img src="https://img.shields.io/badge/Author-有来开源组织-orange.svg"/>
     </a>
-    <div align="center"> 中文 | <a href="./README.en-US.md">English</div>
+    <div align="center"> <a href="./README.md">中文</a> | English</div>
 </div>
 
+---
 
-![](https://foruda.gitee.com/images/1708618984641188532/a7cca095_716974.png "rainbow.png")
+# JOSP-System Frontend
 
-<div align="center">
- <a target="_blank" href="http://vue3.youlai.tech">👀 Live Preview</a> |  <a target="_blank" href="https://juejin.cn/post/7228990409909108793">📖 Read Documentation</a>  
-</div>
+Enterprise-grade admin frontend built with Vue 3, Vite, TypeScript, Element Plus, and ECharts.
 
+## Tech Stack
 
-## Introduction
+| Category | Technology | Version |
+|----------|-----------|---------|
+| Framework | Vue 3 | 3.4+ (Composition API + `<script setup>`) |
+| Build Tool | Vite | 8.x |
+| Language | TypeScript | 5+ (strict mode) |
+| UI Library | Element Plus | 2.4+ |
+| State Management | Pinia | 2.1+ |
+| Router | Vue Router | 4+ (dynamic routing) |
+| HTTP Client | Axios | 1.6+ (request/response interceptors) |
+| Visualization | ECharts | 5.5+ |
+| CSS | UnoCSS | 0.58+ (atomic CSS) |
+| Icons | @iconify/vue + unocss-presets | latest |
 
-[vue3-element-admin](https://github.com/junwOpenSourceProjects/JOSP-SystemTempleVue3) is a free and open-source admin template for backend management frontend, built with popular technologies such as Vue3, Vite5, TypeScript, Element-Plus, and Pinia (with accompanying [backend source code](https://github.com/junwOpenSourceProjects/JOSP-SystemTempleVue3/youlai-boot)).
+---
 
+## System Architecture
 
+```mermaid
+graph TB
+    subgraph Client "Browser"
+        APP["Vue 3 App<br/>Composition API"]
+        ROUTE["Vue Router 4<br/>Dynamic Routes + Navigation Guards"]
+        STORE["Pinia Store<br/>User Info / Permissions / Theme"]
+    end
 
+    subgraph Request Layer "Axios"
+        AX["Axios Instance<br/>Request Interceptor (Token)<br/>Response Interceptor (Error)"]
+    end
 
-## Project Features
+    subgraph Backend "Spring Boot :8081"
+        API["REST API<br/>/api/v1/*"]
+    end
 
-- **Simple and Easy-to-use**: Upgraded version of [vue-element-admin](https://gitee.com/panjiachen/vue-element-admin) for Vue3, with minimal encapsulation and easy to get started.
+    APP --> ROUTE
+    APP --> STORE
+    STORE --> AX
+    AX --> API
 
-- **Data Interaction**: Support both local `Mock` data and remote API. Comes with [Java backend source code](https://github.com/junwOpenSourceProjects/JOSP-SystemTempleVue3/youlai-boot) and online API documentation.
+    style APP fill:#e1f5ff,stroke:#1456f0,color:#000
+    style API fill:#fff3e1,stroke:#f0a020,color:#000
+```
 
-- **Permission Management**: Complete permission system for users, roles, menus, dictionaries, and departments.
+---
 
-- **Essential Infrastructure**: Dynamic routing, button permissions, internationalization, code style, Git commit conventions, and common component encapsulation.
+## Project Structure
 
-- **Continuous Updates**: Since 2021, the project has maintained an open-source status with continuous updates, integrating new tools and dependencies in real time, and has accumulated a broad user base.
+```
+src/
+├── api/                        # API layer — all HTTP requests
+│   ├── auth.ts                # Login / Logout / Current user
+│   ├── config.ts              # System configuration
+│   ├── dashboard.ts           # Dashboard data
+│   ├── notice.ts              # Announcements
+│   ├── dept.ts                # Department management
+│   ├── dict.ts                # Dictionary queries
+│   ├── menu.ts                # Menu management
+│   ├── role.ts                # Role management
+│   ├── user.ts                # User management
+│   ├── loginLog.ts            # Login logs
+│   ├── operLog.ts             # Operation logs
+│   ├── file.ts                # File management
+│   └── demo.ts                # Demo API
+│
+├── components/                # Shared components
+│   └── CURD/                  # Generic CRUD components (PascalCase)
+│       ├── PageSearch.vue     # Paginated search bar
+│       ├── PageTable.vue      # Paginated data table
+│       └── PageModal.vue      # Modal form
+│
+├── composables/               # Composables (hooks)
+│   ├── useCountUp.ts         # Number counter animation
+│   ├── useDict.ts            # Dictionary data fetching
+│   └── useTabs.ts            # Tab management
+│
+├── layout/                    # Layout components
+│   ├── index.vue             # Main layout (sidebar + topbar)
+│   ├── Sidebar.vue           # Sidebar navigation
+│   └── Topbar.vue            # Topbar navigation
+│
+├── router/                    # Router configuration
+│   ├── index.ts              # Router instance + guards
+│   └── routes/               # Static routes + dynamic routes
+│
+├── store/                     # Pinia state management
+│   └── modules/
+│       ├── user.ts           # User info + Token
+│       ├── permission.ts     # Permission route tree
+│       └── tab.ts            # Multi-tab pages
+│
+├── styles/                    # Global styles
+│   ├── variables.css         # CSS variables (theme colors / radius / shadow)
+│   └── index.css             # Global reset + fonts
+│
+├── utils/                     # Utilities
+│   ├── request.ts            # Axios instance wrapper
+│   ├── auth.ts              # Token read/write / user info parsing
+│   └── format.ts            # Date / number formatting
+│
+└── views/                     # Page views
+    ├── dashboard/            # Dashboard (ECharts)
+    ├── login/                # Login page (split layout)
+    ├── personal/             # Personal center
+    ├── notice/               # Announcements
+    ├── error-page/           # 404 / 403 error pages
+    └── system/               # System management
+        ├── user/            # User management
+        ├── role/             # Role management
+        ├── menu/             # Menu management
+        ├── dept/             # Department management
+        ├── dict/             # Dictionary management
+        ├── login-log/        # Login logs
+        ├── oper-log/         # Operation logs
+        └── monitor/          # System monitor
+```
 
-## Project Preview
+---
 
-![Light Mode](https://foruda.gitee.com/images/1709651876583793739/0ba1ee1c_716974.png)
+## Feature Modules
 
-![Dark Mode](https://foruda.gitee.com/images/1709651875494206224/2a2b0b53_716974.png)
+| Page | Route | Description |
+|------|-------|-------------|
+| Login | `/login` | Username/password login, captcha, theme toggle |
+| Dashboard | `/dashboard` | ECharts charts (user stats / visit trends / dept distribution) |
+| Personal Center | `/personal` | User profile, password change |
+| User Management | `/system/user` | User CRUD, role assignment, status management |
+| Role Management | `/system/role` | Role CRUD, menu permission assignment |
+| Menu Management | `/system/menu` | Menu tree CRUD (M directory / C menu / B button) |
+| Department | `/system/dept` | Department tree CRUD |
+| Dictionary | `/system/dict` | Dictionary type + dictionary data management |
+| Login Logs | `/system/login-log` | Login log pagination, IP geolocation |
+| Operation Logs | `/system/oper-log` | Operation log pagination, detail view, clear |
+| Announcements | `/notice` | Announcement list, publish, revoke, pin |
+| System Monitor | `/system/monitor` | Server / database / Redis status cards |
+| System Config | `/system/config` | System parameter configuration |
 
-![API Documentation](https://foruda.gitee.com/images/1687755822857820115/96054330_716974.png)
+---
 
-## Project Links
+## Page Layout
 
-| Project | Gitee                                                        | Github                                                       | GitCode                                                      |
-| ---- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Frontend | [vue3-element-admin](https://github.com/junwOpenSourceProjects/JOSP-SystemTempleVue3) | [vue3-element-admin](https://github.com/youlaitech/vue3-element-admin) | [vue3-element-admin](https://gitcode.net/youlai/vue3-element-admin) |
-| Backend | [youlai-boot](https://github.com/junwOpenSourceProjects/JOSP-SystemTempleVue3/youlai-boot)       | [youlai-boot](https://github.com/haoxianrui/youlai-boot.git) | [youlai-boot](https://gitcode.net/youlai/youlai-boot)        |
+```
+┌──────────────────────────────────────────────────────────┐
+│  [Logo / System Name]  │  Topbar: Breadcrumb + User + Logout  │
+├────────────┬─────────────────────────────────────────────┤
+│            │                                             │
+│  Sidebar   │           Main Content Area                 │
+│  Nav Menu  │                                             │
+│            │  ┌─────────────────────────────────────┐     │
+│  ○ Dashboard│  │  [Page Title]  [Action Buttons]  │     │
+│  ○ System   │  ├─────────────────────────────────────┤     │
+│    - User   │  │  [Search / Filter Bar]              │     │
+│    - Role   │  ├─────────────────────────────────────┤     │
+│    - Menu   │  │                                     │     │
+│    - Dept   │  │  [Data Table / Chart / Form]        │     │
+│  ○ Logs    │  │                                     │     │
+│  ○ Notice  │  └─────────────────────────────────────┘     │
+│  ○ Monitor │                                             │
+└────────────┴─────────────────────────────────────────────┘
+```
 
-## Environment Setup
+---
 
-| Environment         | Name and Version                                             | Download Link                                               |
-| -------------------- | :----------------------------------------------------------- | ------------------------------------------------------------ |
-| **Development Tool** | VSCode                                                       | [Download](https://code.visualstudio.com/Download)           |
-| **Runtime Environment** | Node ≥18                                                    | [Download](http://nodejs.cn/download)                        |
+## Route Authentication Flow
 
+```mermaid
+sequenceDiagram
+    participant U as User Browser
+    participant R as Vue Router
+    participant S as Pinia Store
+    participant A as Axios
 
-## Project Setup
+    U->>R: Navigate to any page
+    R->>R: Navigation guard beforeEach
+
+    alt Not logged in (no Token)
+        R->>U: redirect /login
+    else Logged in
+        S->>S: Check if userInfo exists
+        alt First login / userInfo empty
+            A->>API: GET /auth/current
+            API-->>S: userInfo + roles + permissions
+            S-->>R: Set user info
+        end
+
+        R->>R: Dynamic routes addRoute<br/>Filter routes by roles
+
+        alt Route has no permission
+            R->>U: redirect /403
+        else Has permission
+            R->>U: Render target page
+        end
+    end
+```
+
+---
+
+## Theme & Design Specs
+
+This project follows the design system defined in `DESIGN.md`.
+
+### Brand Colors
+
+| Usage | Color | Description |
+|-------|-------|-------------|
+| Primary (Brand Blue) | `#1456f0` | Sidebar / buttons / links |
+| Success | `#10b981` | Normal status / success |
+| Warning | `#f59e0b` | Warning status |
+| Danger | `#ef4444` | Error / delete / deactivate |
+| Info | `#3b82f6` | Info notice |
+
+### Typography
+
+| Usage | Font | Fallback |
+|-------|------|----------|
+| Chinese body | `DM Sans` | `Outfit`, sans-serif |
+| English/numbers | `Outfit` | sans-serif |
+| Code | `JetBrains Mono` | `Fira Code`, monospace |
+
+### Border Radius
+
+- Buttons/inputs: `9999px` (pill)
+- Cards/containers: `12px`
+- Modals/dropdowns: `16px`
+
+### Shadows
+
+- Cards: `0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06)`
+- Hover: `0 4px 16px rgba(20,85,240,0.16)` (brand blue glow)
+
+---
+
+## Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `VITE_APP_TITLE` | Browser tab title | `JOSP-System` |
+| `VITE_API_BASE_URL` | Backend API base path | `/api/v1` |
+
+---
+
+## Quick Start
+
+### Requirements
+
+- Node.js 18+
+- pnpm 8+
+
+### Install & Run
 
 ```bash
-# Clone the repository
-git clone https://github.com/junwOpenSourceProjects/JOSP-SystemTempleVue3.git
-
-# Change directory
-cd vue3-element-admin
-
-# Install pnpm
-npm install pnpm -g
-
 # Install dependencies
 pnpm install
 
-# Start the project
-pnpm run dev
+# Development (hot reload)
+pnpm dev
+# Access http://localhost:5173
+
+# Type check (non-blocking in dev)
+pnpm type-check
+
+# Production build
+pnpm build
+
+# Preview build output
+pnpm preview
+
+# ESLint check
+pnpm lint
 ```
 
-## Project Deployment
+### Build Output
 
-```bash
-# Build the project
-pnpm run build
+| Output | Path |
+|--------|------|
+| Build artifacts | `dist/` |
+| Bundle analysis | `dist/stats.html` (run `pnpm preview` to view) |
 
-# Upload files to the remote server
-Copy the files generated in the `dist` directory to the `/usr/share/nginx/html` directory.
+---
 
-# nginx.cofig configuration
-server {
-	listen     80;
-	server_name  localhost;
-	location / {
-			root /usr/share/nginx/html;
-			index index.html index.htm;
-	}
-	# Reverse proxy configuration
-	location /prod-api/ {
-			proxy_pass http://vapi.youlai.tech/; # Replace vapi.youlai.tech with your backend API address
-	}
-}
-```
+## Connecting to Backend
 
-## Local Mock
+All frontend requests go through `src/utils/request.ts` with BaseURL pointing to `/api/v1`.
 
-The project supports both online API and local mock API. By default, it uses the online API. If you want to switch to the mock API, modify the value of `VITE_MOCK_DEV_SERVER` in the `.env.development` file to `true`.
+**Request interceptor**: automatically injects `Bearer {token}` into the `Authorization` header.
 
-## Backend API
+**Response interceptor**: auto-redirects to login on 401, to 403 page on 403, and shows error message on 500+.
 
-> If you have a basic understanding of Java development, follow these steps to convert online API to local backend API and set up a full-stack development environment.
+---
 
-1. Get the backend source code based on `Java` and `SpringBoot` from [youlai-boot](https://github.com/junwOpenSourceProjects/JOSP-SystemTempleVue3/youlai-boot.git).
-2. Follow the instructions in the backend project's README.md to set up the local environment.
-3. Modify the value of `VITE_APP_API_URL` in the `.env.development` file to `http://localhost:8989`, replacing it with the backend API URL.
+## Related Docs
 
-## Notes
-
-- **Auto import plugin is disabled by default**
-
-  Component type declarations have been automatically generated for the template project. If you add and use new components, follow the instructions in the screenshot to enable automatic generation. After automatic generation is complete, remember to set it back to `false` to avoid conflicts.
-
-  ![](https://foruda.gitee.com/images/1687755823137387608/412ea803_716974.png)
-
-- **Blank page when accessing the project**
-
-  Try upgrading your browser, as older browser engines may not support certain new JavaScript syntax, such as optional chaining operator `?.`.
-
-- **Red highlight on project components, functions, and imports**
-
-  Restart VSCode to try again.
-
-- **Other issues**
-
-  If you have any other issues or suggestions, please open an [issue](https://github.com/junwOpenSourceProjects/JOSP-SystemTempleVue3/issues/new).
-
-## Project Documentation
-
-- [Building a Backend Management System from Scratch with Vue3, Vite, TypeScript, and Element-Plus](https://blog.csdn.net/u013737132/article/details/130191394)
-
-- [ESLint+Prettier+Stylelint+EditorConfig for Standardized and Unified Frontend Code Style](https://blog.csdn.net/u013737132/article/details/130190788)
-- [Git Commit Conventions with Husky, Lint-staged, Commitlint, Commitizen, and cz-git](https://blog.csdn.net/u013737132/article/details/130191363)
-
-## Commit Conventions
-
-Execute `pnpm run commit` to invoke interactive git commit and complete the information input and selection according to the prompts.
-
-![](https://foruda.gitee.com/images/1687755823165218215/c1705416_716974.png)
-
-## Community 🚀
-
-> **Follow "Youlai Tech" WeChat Official Account to get the QR code for the community.**
->
-> If the QR code for the community has expired, please add my WeChat (haoxianrui) and indicate whether you are interested in "Frontend", "Backend", or "Full Stack" to get the latest QR code.
->
-> This measure is taken to ensure the quality of the community and prevent marketing advertising from infiltrating. Thank you for your understanding!
-
-| Official Account | Community |
-|:----:|:----:|
-| ![Youlai Tech WeChat Official Account QR Code](https://foruda.gitee.com/images/1687689212187063809/3c69eaee_716974.png) | ![Community QR Code](https://foruda.gitee.com/images/1687689212139273561/6a65ef69_716974.png) |
-
+- [DESIGN.md](DESIGN.md) — Design system specification
+- [../../JOSP-SystemTempleJava/README.md](../JOSP-SystemTempleJava/README.md) — Backend README
