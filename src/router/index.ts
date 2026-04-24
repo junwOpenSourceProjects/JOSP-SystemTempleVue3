@@ -65,6 +65,12 @@ export const constantRoutes: RouteRecordRaw[] = [
         meta: { title: "编辑公告", hidden: true },
       },
       {
+        path: "system/config",
+        component: () => import("@/views/system/config/index.vue"),
+        name: "SystemConfig",
+        meta: { title: "系统配置", icon: "setting" },
+      },
+      {
         path: "401",
         component: () => import("@/views/error-page/401.vue"),
         meta: { hidden: true },
