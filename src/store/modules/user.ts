@@ -1,3 +1,10 @@
+/**
+ * User Store Module
+ * @description Manages user authentication state, login/logout operations, and user information.
+ * Uses Pinia for state management with Composition API style.
+ *
+ * @package store
+ */
 import AuthAPI from "@/api/auth";
 import UserAPI from "@/api/user";
 import { resetRouter } from "@/router";
@@ -7,23 +14,30 @@ import { LoginData, LoginResult } from "@/api/auth/model";
 import { UserInfo } from "@/api/user/model";
 import { TOKEN_KEY } from "@/enums/CacheEnum";
 
+/**
+ * User Store
+ * @description Handles user authentication and user information management.
+ * Provides login, logout, token management, and user profile retrieval.
+ */
 export const useUserStore = defineStore("user", () => {
+  /** Current logged-in user information */
   const user = ref<UserInfo>({
     roles: [],
     perms: [],
   });
 
   /**
-   * 登录
-   *
-   * @param {LoginData}
-   * @returns
+   * Perform user login
+   * @description Authenticates user with credentials and stores the access token.
+   * @param loginData - Login credentials (username, password, captcha)
+   * @returns Promise that resolves when login is successful
    */
   function login(loginData: LoginData) {
     return new Promise<void>((resolve, reject) => {
       AuthAPI.login(loginData)
         .then((data: LoginResult) => {
           const { token, tokenHead } = data;
+          // Store token in localStorage for persistence
           localStorage.setItem(TOKEN_KEY, tokenHead + token);
           resolve();
         })
@@ -33,7 +47,12 @@ export const useUserStore = defineStore("user", () => {
     });
   }
 
-  // 获取信息(用户昵称、头像、角色集合、权限集合)
+  /**
+   * Fetch current user information
+   * @description Retrieves user profile including nickname, avatar, roles, and permissions.
+   * @returns Promise resolving to UserInfo object
+   * @throws Error if verification fails
+   */
   function getUserInfo() {
     return new Promise<UserInfo>((resolve, reject) => {
       AuthAPI.getUserInfo()
@@ -51,13 +70,19 @@ export const useUserStore = defineStore("user", () => {
     });
   }
 
-  // user logout
+  /**
+   * Perform user logout
+   * @description Calls logout API and clears local storage, then reloads the page.
+   * @returns Promise that resolves after logout is complete
+   */
   function logout() {
     return new Promise<void>((resolve, reject) => {
       AuthAPI.logout()
         .then(() => {
-          localStorage.setItem(TOKEN_KEY, "");
-          location.reload(); // 清空路由
+          // BUG FIX: Use removeItem instead of setItem("") to properly clear token
+          // An empty string "" is still truthy in JavaScript, causing token checks to fail
+          localStorage.removeItem(TOKEN_KEY);
+          location.reload(); // Clear routes by reloading
           resolve();
         })
         .catch((error: any) => {
@@ -66,12 +91,18 @@ export const useUserStore = defineStore("user", () => {
     });
   }
 
-
-  // remove token
+  /**
+   * Reset user token and router state
+   * @description Clears the stored token and resets router to initial state.
+   * Used when token expires or user session is invalidated.
+   * @returns Promise that resolves after reset is complete
+   */
   function resetToken() {
     console.log("resetToken");
     return new Promise<void>((resolve) => {
-      localStorage.setItem(TOKEN_KEY, "");
+      // BUG FIX: Use removeItem instead of setItem("") to properly clear token
+      // An empty string "" would still pass truthy checks like if(hasToken)
+      localStorage.removeItem(TOKEN_KEY);
       resetRouter();
       resolve();
     });
@@ -86,7 +117,11 @@ export const useUserStore = defineStore("user", () => {
   };
 });
 
-// 非setup
+/**
+ * Hook for accessing user store outside of Vue components
+ * @description Provides access to the user store instance for non-component usage.
+ * @returns User store instance
+ */
 export function useUserStoreHook() {
   return useUserStore(store);
 }

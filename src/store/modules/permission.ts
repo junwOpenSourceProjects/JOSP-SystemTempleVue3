@@ -1,3 +1,10 @@
+/**
+ * Permission Store Module
+ * @description Manages dynamic route generation and user permissions.
+ * Filters routes based on user roles and generates accessible navigation.
+ *
+ * @package store
+ */
 import { RouteRecordRaw } from "vue-router";
 import { constantRoutes } from "@/router";
 import { store } from "@/store";
@@ -9,15 +16,17 @@ const modules = import.meta.glob("../../views/**/**.vue");
 const Layout = () => import("@/layout/index.vue");
 
 /**
- * Use meta.role to determine if the current user has permission
+ * Permission Checker
+ * @description Determines if user has access to a specific route based on roles.
+ * The ROOT role (super admin) has access to all routes.
  *
- * @param roles 用户角色集合
- * @param route 路由
- * @returns
+ * @param roles - Array of user role identifiers
+ * @param route - Vue Router route record to check
+ * @returns True if user has permission, false otherwise
  */
 const hasPermission = (roles: string[], route: RouteRecordRaw) => {
   if (route.meta && route.meta.roles) {
-    // 角色【超级管理员】拥有所有权限，忽略校验
+    // ROOT role (super admin) has all permissions, bypass check
     if (roles.includes("ROOT")) {
       return true;
     }
@@ -31,31 +40,34 @@ const hasPermission = (roles: string[], route: RouteRecordRaw) => {
 };
 
 /**
- * 递归过滤有权限的动态路由
+ * Filter Async Routes by Permission
+ * @description Recursively filters routes that the user has permission to access.
+ * Button-type menus are filtered out as they don't need route generation.
  *
- * @param routes 接口返回所有的动态路由
- * @param roles 用户角色集合
- * @returns 返回用户有权限的动态路由
+ * @param routes - Routes from API containing all accessible routes
+ * @param roles - User's role collection
+ * @returns Filtered array of routes user has permission to access
  */
 const filterAsyncRoutes = (routes: RouteVO[], roles: string[]) => {
   const asyncRoutes: RouteRecordRaw[] = [];
   routes.forEach((route) => {
-    // 过滤按钮类型菜单（按钮类型不需要生成路由）
+    // Filter button-type menus (buttons don't need route generation)
     if ((route as any).type === MenuTypeEnum.BUTTON) {
       return;
     }
 
-    const tmpRoute = { ...route } as RouteRecordRaw; // 深拷贝 route 对象 避免污染
+    const tmpRoute = { ...route } as RouteRecordRaw; // Deep copy to avoid mutation
     if (hasPermission(roles, tmpRoute)) {
-      // 如果是顶级目录，替换为 Layout 组件
+      // If top-level directory, replace with Layout component
       if (tmpRoute.component?.toString() == "Layout") {
         tmpRoute.component = Layout;
       } else {
-        // 如果是子目录，动态加载组件
+        // If sub-directory, dynamically load component
         const component = modules[`../../views/${tmpRoute.component}.vue`];
         if (component) {
           tmpRoute.component = component;
         } else {
+          // Fallback to 404 error page if component not found
           tmpRoute.component = modules[`../../views/error-page/404.vue`];
         }
       }
@@ -70,28 +82,38 @@ const filterAsyncRoutes = (routes: RouteVO[], roles: string[]) => {
 
   return asyncRoutes;
 };
-// setup
+
+/**
+ * Permission Store
+ * @description Manages route state and dynamic route generation for the application.
+ * Provides functions to set routes, generate routes by roles, and handle mix mode menus.
+ */
+ // setup
 export const usePermissionStore = defineStore("permission", () => {
-  // state
+  /** Accumulated routes (constant + dynamic) */
   const routes = ref<RouteRecordRaw[]>([]);
 
-  // actions
+  /**
+   * Set Routes
+   * @description Combines constant routes with dynamically generated routes.
+   * @param newRoutes - Array of RouteRecordRaw to add
+   */
   function setRoutes(newRoutes: RouteRecordRaw[]) {
     routes.value = constantRoutes.concat(newRoutes);
   }
 
   /**
-   * 生成动态路由
-   *
-   * @param roles 用户角色集合
-   * @returns
+   * Generate Dynamic Routes
+   * @description Fetches all routes from API and filters them by user permissions.
+   * @param roles - User role collection for permission filtering
+   * @returns Promise resolving to array of accessible RouteRecordRaw
    */
   function generateRoutes(roles: string[]) {
     return new Promise<RouteRecordRaw[]>((resolve, reject) => {
-      // 接口获取所有路由
+      // Fetch all routes from API
       MenuAPI.getRoutes()
         .then((data) => {
-          // 过滤有权限的动态路由
+          // Filter routes user has permission to access
           const accessedRoutes = filterAsyncRoutes(data, roles);
           setRoutes(accessedRoutes);
           resolve(accessedRoutes);
@@ -103,9 +125,16 @@ export const usePermissionStore = defineStore("permission", () => {
   }
 
   /**
-   * 获取与激活的顶部菜单项相关的混合模式左侧菜单集合
+   * Mix Mode Left Menus
+   * @description Stores the left-side menus for mix layout mode based on active top menu.
    */
   const mixLeftMenus = ref<RouteRecordRaw[]>([]);
+
+  /**
+   * Set Mix Left Menus
+   * @description Finds and sets left menus for the active top menu path in mix mode.
+   * @param topMenuPath - Path of the active top-level menu
+   */
   function setMixLeftMenus(topMenuPath: string) {
     const matchedItem = routes.value.find((item) => item.path === topMenuPath);
     if (matchedItem && matchedItem.children) {
@@ -121,6 +150,11 @@ export const usePermissionStore = defineStore("permission", () => {
   };
 });
 
+/**
+ * Hook for accessing permission store outside of Vue components
+ * @description Provides access to the permission store instance for non-component usage.
+ * @returns Permission store instance
+ */
 // 非setup
 export function usePermissionStoreHook() {
   return usePermissionStore(store);

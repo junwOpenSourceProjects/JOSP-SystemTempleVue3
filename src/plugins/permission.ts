@@ -1,11 +1,23 @@
+/**
+ * Permission Plugin
+ * @description Vue plugin for permission checks and route navigation guards.
+ * Handles authentication verification, dynamic route loading, and permission checks.
+ *
+ * @package plugins
+ */
 import router from "@/router";
 import { useUserStore, usePermissionStore } from "@/store";
 import NProgress from "@/utils/nprogress";
 import { RouteRecordRaw } from "vue-router";
 import { TOKEN_KEY } from "@/enums/CacheEnum";
 
+/**
+ * Setup Permission Plugin
+ * @description Initializes Vue Router navigation guards for authentication and authorization.
+ * Guards check for valid tokens, load dynamic routes on first access, and handle redirects.
+ */
 export function setupPermission() {
-  // 白名单路由
+  // Whitelist routes that don't require authentication
   const whiteList = ["/login"];
 
   router.beforeEach(async (to) => {
@@ -14,7 +26,7 @@ export function setupPermission() {
 
     if (hasToken) {
       if (to.path === "/login") {
-        // 如果已登录，跳转首页
+        // If already logged in, redirect to home page
         NProgress.done();
         return { path: "/" };
       } else {
@@ -23,11 +35,11 @@ export function setupPermission() {
           userStore.user.roles && userStore.user.roles.length > 0;
 
         if (hasRoles) {
-          // 未匹配到任何路由，跳转404
+          // No routes matched, redirect to 404
           if (to.matched.length === 0) {
             return "/404";
           } else {
-            // 如果路由参数中有 title，覆盖路由元信息中的 title
+            // If title is in route params/query, override meta title
             const title =
               (to.params.title as string) || (to.query.title as string);
             if (title) {
@@ -38,18 +50,19 @@ export function setupPermission() {
         } else {
           const permissionStore = usePermissionStore();
           try {
+            // Fetch user info and generate dynamic routes
             const { roles } = await userStore.getUserInfo();
             const accessRoutes = await permissionStore.generateRoutes(roles);
             accessRoutes.forEach((route: RouteRecordRaw) => {
               router.addRoute(route);
             });
-            // 重新进入路由，确保动态生成的路由已被完全加载
+            // Re-enter route to ensure dynamic routes are fully loaded
             return { ...to, replace: true };
           } catch (error) {
             console.error("Permission error:", error);
-            // 移除 token 并跳转登录页
+            // Remove token and redirect to login
             await userStore.resetToken();
-            // 重定向到登录页，并携带当前页面路由和参数
+            // Redirect to login with current page route and parameters
             const redirect = encodeURIComponent(to.fullPath);
             NProgress.done();
             return `/login?redirect=${redirect}`;
@@ -57,12 +70,12 @@ export function setupPermission() {
         }
       }
     } else {
-      // 未登录
+      // Not logged in
       if (whiteList.includes(to.path)) {
-        // 在白名单，直接进入
+        // In whitelist, allow direct access
         return true;
       } else {
-        // 不在白名单，重定向到登录页
+        // Not in whitelist, redirect to login
         const redirect = encodeURIComponent(to.fullPath);
         NProgress.done();
         return `/login?redirect=${redirect}`;
@@ -76,14 +89,20 @@ export function setupPermission() {
 }
 
 /**
- * 是否有权限
+ * Check Authentication Permission
+ * @description Verifies if user has the required permission/role.
+ * ROOT role has all button permissions.
+ *
+ * @param value - Permission string or array of strings to check
+ * @param type - Type of check: "button" for permissions, "role" for roles
+ * @returns True if user has permission, false otherwise
  */
 export function hasAuth(
   value: string | string[],
   type: "button" | "role" = "button"
 ) {
   const { roles, perms } = useUserStore().user;
-  //「超级管理员」拥有所有的按钮权限
+  // ROOT role (super admin) has all button permissions
   if (type === "button" && roles && roles.includes("ROOT")) {
     return true;
   }

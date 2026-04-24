@@ -1,9 +1,20 @@
+/**
+ * Vue Router Configuration
+ * @description Central router setup with constant routes and navigation guards.
+ * Handles route initialization, guards for authentication, and router reset.
+ *
+ * @package router
+ */
 import type { App } from "vue";
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 
 export const Layout = () => import("@/layout/index.vue");
 
-// 静态路由
+/**
+ * Constant Routes
+ * @description Static routes that are always available in the application.
+ * Includes login, redirect, dashboard, personal center, notice, and error pages.
+ */
 export const constantRoutes: RouteRecordRaw[] = [
   {
     path: "/redirect",
@@ -68,22 +79,29 @@ export const constantRoutes: RouteRecordRaw[] = [
 ];
 
 /**
- * 创建路由
+ * Create Router Instance
+ * @description Initializes router with hash history mode and scroll behavior.
  */
 const router = createRouter({
   history: createWebHashHistory(),
   routes: constantRoutes,
-  // 刷新时，滚动条位置还原
+  // Restore scroll position on refresh
   scrollBehavior: () => ({ left: 0, top: 0 }),
 });
 
-// 全局注册 router
+/**
+ * Setup Router
+ * @description Registers router instance with the Vue application.
+ * @param app - Vue application instance
+ */
 export function setupRouter(app: App<Element>) {
   app.use(router);
 }
 
 /**
- * 重置路由
+ * Reset Router
+ * @description Clears current router state and redirects to login page.
+ * Used during logout or token expiration.
  */
 export function resetRouter() {
   router.replace({ path: "/login" });
