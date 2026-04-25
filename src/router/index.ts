@@ -71,6 +71,30 @@ export const constantRoutes: RouteRecordRaw[] = [
         meta: { title: "系统配置", icon: "setting" },
       },
       {
+        path: "log/login-log",
+        component: () => import("@/views/log/login-log/index.vue"),
+        name: "LoginLog",
+        meta: { title: "登录日志", icon: "info" },
+      },
+      {
+        path: "log/oper-log",
+        component: () => import("@/views/oper-log/index.vue"),
+        name: "OperLog",
+        meta: { title: "操作日志", icon: "operation" },
+      },
+      {
+        path: "monitor/online-users",
+        component: () => import("@/views/monitor/online-users/index.vue"),
+        name: "OnlineUsers",
+        meta: { title: "在线用户", icon: "online" },
+      },
+      {
+        path: "monitor/server",
+        component: () => import("@/views/monitor/server/index.vue"),
+        name: "MonitorServer",
+        meta: { title: "系统监控", icon: "monitor" },
+      },
+      {
         path: "401",
         component: () => import("@/views/error-page/401.vue"),
         meta: { hidden: true },
