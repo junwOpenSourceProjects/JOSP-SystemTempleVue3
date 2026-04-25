@@ -67,20 +67,20 @@ export interface MonitorVO {
 
 // 获取全部监控信息
 export const getMonitorInfo = () => {
-  return request.get<any, any>('/v1/monitor/info')
+  return request.get<any, any>('/api/v1/monitor/info')
 }
 
 // 获取服务器信息
 export const getServerInfo = () => {
-  return request.get<any, any>('/v1/monitor/server')
+  return request.get<any, any>('/api/v1/monitor/server')
 }
 
 // 获取数据库信息
 export const getDatabaseInfo = () => {
-  return request.get<any, any>('/v1/monitor/database')
+  return request.get<any, any>('/api/v1/monitor/database')
 }
 
 // 获取Redis信息
 export const getRedisInfo = () => {
-  return request.get<any, any>('/v1/monitor/redis')
+  return request.get<any, any>('/api/v1/monitor/redis')
 }

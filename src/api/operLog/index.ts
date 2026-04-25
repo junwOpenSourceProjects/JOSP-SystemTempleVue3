@@ -34,20 +34,20 @@ export interface PageResult<T = any> {
 
 // 获取操作日志分页列表
 export const getOperLogPage = (params: OperLogPageQuery) => {
-  return request.get<any, any>('/v1/oper-logs/page', { params })
+  return request.get<any, any>('/api/v1/oper-logs/page', { params })
 }
 
 // 删除操作日志
 export const deleteOperLog = (id: number) => {
-  return request.delete<any, any>(`/v1/oper-logs/${id}`)
+  return request.delete<any, any>(`/api/v1/oper-logs/${id}`)
 }
 
 // 批量删除操作日志
 export const batchDeleteOperLog = (ids: number[]) => {
-  return request.delete<any, any>('/v1/oper-logs/batch', { data: ids })
+  return request.delete<any, any>('/api/v1/oper-logs/batch', { data: ids })
 }
 
 // 清理操作日志
 export const cleanOperLog = (days: number) => {
-  return request.delete<any, any>('/v1/oper-logs/clean', { params: { days } })
+  return request.delete<any, any>('/api/v1/oper-logs/clean', { params: { days } })
 }

@@ -28,20 +28,20 @@ export interface PageResult<T = any> {
 
 // 获取在线用户分页列表
 export const getOnlineUserPage = (params: OnlineUserPageQuery) => {
-  return request.get<any, any>('/v1/online-users/page', { params })
+  return request.get<any, any>('/api/v1/online-users/page', { params })
 }
 
 // 获取在线用户数量
 export const getOnlineUserCount = () => {
-  return request.get<any, any>('/v1/online-users/count')
+  return request.get<any, any>('/api/v1/online-users/count')
 }
 
 // 强制下线
 export const forceLogout = (token: string) => {
-  return request.delete<any, any>(`/v1/online-users/${token}`)
+  return request.delete<any, any>(`/api/v1/online-users/${token}`)
 }
 
 // 全部下线
 export const logoutAll = () => {
-  return request.delete<any, any>('/v1/online-users/logout-all')
+  return request.delete<any, any>('/api/v1/online-users/logout-all')
 }
