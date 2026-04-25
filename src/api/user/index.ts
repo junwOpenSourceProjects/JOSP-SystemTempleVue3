@@ -88,6 +88,17 @@ class UserAPI {
   }
 
   /**
+   * 修改当前用户密码（需验证旧密码）
+   */
+  static changePassword(oldPassword: string, newPassword: string) {
+    return request({
+      url: `${USER_BASE_URL}/password`,
+      method: "put",
+      params: { oldPassword, newPassword },
+    });
+  }
+
+  /**
    * 批量删除用户，多个以英文逗号(,)分割
    *
    * @param ids 用户ID字符串，多个以英文逗号(,)分割

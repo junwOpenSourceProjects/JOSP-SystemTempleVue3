@@ -112,8 +112,8 @@ const submitProfile = async () => {
     if (valid) {
       profileLoading.value = true;
       try {
-        // API call would go here
-        // await UserAPI.updateProfile(profileForm);
+        await UserAPI.update(userStore.user.userId, profileForm);
+        await userStore.getUserInfo();
         ElMessage.success("个人信息更新成功");
       } catch (error) {
         ElMessage.error("更新失败");
@@ -131,8 +131,7 @@ const submitPassword = async () => {
     if (valid) {
       passwordLoading.value = true;
       try {
-        // API call would go here
-        // await UserAPI.updatePassword(userStore.user.id, passwordForm.newPassword);
+        await UserAPI.changePassword(passwordForm.oldPassword, passwordForm.newPassword);
         ElMessage.success("密码修改成功");
         passwordFormRef.value?.resetFields();
       } catch (error) {
