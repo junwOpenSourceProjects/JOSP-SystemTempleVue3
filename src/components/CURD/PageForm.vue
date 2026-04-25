@@ -83,24 +83,45 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * 表单组件 (PageForm)
+ * 职责：渲染动态表单，支持多种表单项类型
+ * 用于在页面中直接展示表单（如搜索区域、详情查看等）
+ * 特性：支持表单项联动（watch、computed、watchEffect）
+ */
 import type { FormInstance, FormRules } from "element-plus";
 import type { IObject, IPageForm } from "./types";
 
-// 定义接收的属性
+/** 组件属性：默认主键名为 id */
 const props = withDefaults(defineProps<IPageForm>(), {
   pk: "id",
 });
 
+/** 表单引用 */
 const formRef = ref<FormInstance>();
+
+/** 响应式的表单项数据 */
 const formItems = reactive(props.formItems);
+
+/** 表单数据对象 */
 const formData = reactive<IObject>({});
+
+/** 表单验证规则 */
 const formRules: FormRules = {};
-const prepareFuncs = [];
+
+/** 准备函数数组（用于初始化监听器） */
+const prepareFuncs: Array<() => void> = [];
+
+/** 初始化表单项和数据 */
 for (const item of formItems) {
+  // 执行初始化函数
   item.initFn && item.initFn(item);
+  // 初始化表单数据
   formData[item.prop] = item.initialValue ?? "";
+  // 初始化验证规则
   formRules[item.prop] = item.rules ?? [];
 
+  // 如果配置了 watch 函数，监听该字段变化
   if (item.watch !== undefined) {
     prepareFuncs.push(() => {
       watch(
@@ -112,6 +133,7 @@ for (const item of formItems) {
     });
   }
 
+  // 如果配置了 computed 函数，创建计算属性
   if (item.computed !== undefined) {
     prepareFuncs.push(() => {
       watchEffect(() => {
@@ -120,6 +142,7 @@ for (const item of formItems) {
     });
   }
 
+  // 如果配置了 watchEffect 函数，响应式收集依赖
   if (item.watchEffect !== undefined) {
     prepareFuncs.push(() => {
       watchEffect(() => {
@@ -128,30 +151,44 @@ for (const item of formItems) {
     });
   }
 }
+
+/** 执行所有准备函数 */
 prepareFuncs.forEach((func) => func());
 
-// 获取表单数据
+/**
+ * 获取表单数据
+ * @param key 可选，指定获取某个字段的值
+ * @returns 表单数据对象或指定字段值
+ */
 function getFormData(key?: string) {
   return key === undefined ? formData : (formData[key] ?? undefined);
 }
 
-// 设置表单值
+/**
+ * 设置表单数据（批量设置）
+ * @param data 包含字段和值的对象
+ */
 function setFormData(data: IObject) {
   for (const key in formData) {
     if (Object.hasOwn(formData, key) && key in data) {
       formData[key] = data[key];
     }
   }
+  // 如果数据中包含主键，也设置主键
   if (Object.hasOwn(data, props.pk)) {
     formData[props.pk] = data[props.pk];
   }
 }
 
-// 设置表单项值
+/**
+ * 设置单个表单项的值
+ * @param key 字段名
+ * @param value 要设置的值
+ */
 function setFormItemData(key: string, value: any) {
   formData[key] = value;
 }
 
-// 暴露的属性和方法
+/** 暴露的属性和方法，供父组件通过 ref 调用 */
 defineExpose({ formRef, getFormData, setFormData, setFormItemData });
 </script>

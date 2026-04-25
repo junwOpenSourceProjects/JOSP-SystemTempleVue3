@@ -16,7 +16,12 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * 分页组件
+ * 职责：通用的分页控件，支持自定义每页条数、布局样式
+ */
 import type { PropType } from "vue";
+
 const props = defineProps({
   total: {
     required: true,

@@ -1,6 +1,8 @@
+<!-- 主布局组件 -->
+<!-- 支持三种布局模式：left（左侧导航）、top（顶部导航）、mix（混合布局） -->
 <template>
   <div class="wh-full" :class="classObj">
-    <!-- 遮罩层 -->
+    <!-- 移动端遮罩层 - 当侧边栏打开时覆盖内容 -->
     <div
       v-if="isMobile && isOpenSidebar"
       class="wh-full fixed-lt z-999 bg-black bg-opacity-30"
@@ -52,6 +54,10 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * 主布局组件
+ * 职责：管理整体布局结构，支持响应式设计，处理侧边栏展开/收起逻辑
+ */
 import { useAppStore, useSettingsStore, usePermissionStore } from "@/store";
 import defaultSettings from "@/settings";
 import { DeviceEnum } from "@/enums/DeviceEnum";
@@ -62,15 +68,39 @@ const settingsStore = useSettingsStore();
 const permissionStore = usePermissionStore();
 const width = useWindowSize().width;
 
-const WIDTH_DESKTOP = 992; // 响应式布局容器固定宽度  大屏（>=1200px） 中屏（>=992px） 小屏（>=768px）
-const isMobile = computed(() => appStore.device === DeviceEnum.MOBILE);
-const isOpenSidebar = computed(() => appStore.sidebar.opened);
-const fixedHeader = computed(() => settingsStore.fixedHeader); // 是否固定header
-const showTagsView = computed(() => settingsStore.tagsView); // 是否显示tagsView
-const layout = computed(() => settingsStore.layout); // 布局模式 left top mix
-const activeTopMenuPath = computed(() => appStore.activeTopMenuPath); // 顶部菜单激活path
-const mixLeftMenus = computed(() => permissionStore.mixLeftMenus); // 混合布局左侧菜单
+/**
+ * 响应式布局断点宽度
+ * - 大屏 >=1200px
+ * - 中屏 >=992px
+ * - 小屏 >=768px
+ */
+const WIDTH_DESKTOP = 992;
 
+/** 计算属性：是否为移动端设备 */
+const isMobile = computed(() => appStore.device === DeviceEnum.MOBILE);
+
+/** 计算属性：侧边栏是否打开 */
+const isOpenSidebar = computed(() => appStore.sidebar.opened);
+
+/** 计算属性：是否固定header */
+const fixedHeader = computed(() => settingsStore.fixedHeader);
+
+/** 计算属性：是否显示标签视图 */
+const showTagsView = computed(() => settingsStore.tagsView);
+
+/** 计算属性：当前布局模式 (left/top/mix) */
+const layout = computed(() => settingsStore.layout);
+
+/** 计算属性：顶部菜单激活路径（混合布局用） */
+const activeTopMenuPath = computed(() => appStore.activeTopMenuPath);
+
+/** 计算属性：混合布局左侧菜单 */
+const mixLeftMenus = computed(() => permissionStore.mixLeftMenus);
+
+/**
+ * 监听顶部菜单激活路径变化
+ * 当混合布局中顶部菜单切换时，更新左侧二级菜单
+ */
 watch(
   () => activeTopMenuPath.value,
   (newVal: string) => {
@@ -82,6 +112,10 @@ watch(
   }
 );
 
+/**
+ * 计算属性：动态样式类
+ * 根据侧边栏状态和布局模式生成对应CSS类名
+ */
 const classObj = computed(() => ({
   hideSidebar: !appStore.sidebar.opened,
   openSidebar: appStore.sidebar.opened,
@@ -89,6 +123,11 @@ const classObj = computed(() => ({
   [`layout-${settingsStore.layout}`]: true,
 }));
 
+/**
+ * 响应式监听：监听窗口宽度变化
+ * - 当宽度小于桌面断点时，切换为移动端设备
+ * - 大屏设备自动展开侧边栏，小屏设备自动关闭
+ */
 watchEffect(() => {
   appStore.toggleDevice(
     width.value < WIDTH_DESKTOP ? DeviceEnum.MOBILE : DeviceEnum.DESKTOP
@@ -100,14 +139,17 @@ watchEffect(() => {
   }
 });
 
+/** 点击遮罩层关闭侧边栏（移动端） */
 function handleOutsideClick() {
   appStore.closeSideBar();
 }
 
+/** 切换侧边栏展开/收起状态 */
 function toggleSidebar() {
   appStore.toggleSidebar();
 }
 
+/** 监听路由变化，移动端时自动关闭侧边栏 */
 const route = useRoute();
 watch(route, () => {
   if (isMobile.value && isOpenSidebar.value) {

@@ -244,31 +244,57 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * 弹窗表单组件 (PageModal)
+ * 职责：渲染弹窗/抽屉形式的表单，用于新增和编辑操作
+ * 支持两种容器类型：el-dialog（弹窗）和 el-drawer（抽屉）
+ * 使用方式：配合 usePage hook 使用，通过 setModalVisible 打开弹窗
+ */
 import { useThrottleFn } from "@vueuse/core";
 import type { FormInstance, FormRules } from "element-plus";
 import type { IModalConfig, IObject } from "./types";
 
-// 定义接收的属性
+/** 组件属性 */
 const props = defineProps<{
   modalConfig: IModalConfig;
 }>();
-// 自定义事件
+
+/** 自定义事件：表单提交成功后触发 */
 const emit = defineEmits<{
   submitClick: [];
 }>();
 
+/** 主键名（用于编辑时识别记录） */
 const pk = props.modalConfig.pk ?? "id";
+
+/** 弹窗是否可见 */
 const modalVisible = ref(false);
+
+/** 表单引用 */
 const formRef = ref<FormInstance>();
+
+/** 响应式的表单项数据 */
 const formItems = reactive(props.modalConfig.formItems);
+
+/** 表单数据对象 */
 const formData = reactive<IObject>({});
+
+/** 表单验证规则 */
 const formRules: FormRules = {};
-const prepareFuncs = [];
+
+/** 准备函数数组（用于初始化监听器） */
+const prepareFuncs: Array<() => void> = [];
+
+/** 初始化表单项和数据 */
 for (const item of formItems) {
+  // 执行初始化函数
   item.initFn && item.initFn(item);
+  // 初始化表单数据
   formData[item.prop] = item.initialValue ?? "";
+  // 初始化验证规则
   formRules[item.prop] = item.rules ?? [];
 
+  // 如果配置了 watch 函数，监听该字段变化
   if (item.watch !== undefined) {
     prepareFuncs.push(() => {
       watch(
@@ -280,6 +306,7 @@ for (const item of formItems) {
     });
   }
 
+  // 如果配置了 computed 函数，创建计算属性
   if (item.computed !== undefined) {
     prepareFuncs.push(() => {
       watchEffect(() => {
@@ -288,6 +315,7 @@ for (const item of formItems) {
     });
   }
 
+  // 如果配置了 watchEffect 函数，响应式收集依赖
   if (item.watchEffect !== undefined) {
     prepareFuncs.push(() => {
       watchEffect(() => {
@@ -296,31 +324,48 @@ for (const item of formItems) {
     });
   }
 }
+
+/** 执行所有准备函数 */
 prepareFuncs.forEach((func) => func());
 
-// 获取表单数据
+/**
+ * 获取表单数据
+ * @param key 可选，指定获取某个字段的值
+ * @returns 表单数据对象或指定字段值
+ */
 function getFormData(key?: string) {
   return key === undefined ? formData : (formData[key] ?? undefined);
 }
 
-// 设置表单值
+/**
+ * 设置表单数据（批量设置）
+ * @param data 包含字段和值的对象
+ */
 function setFormData(data: IObject) {
   for (const key in formData) {
     if (Object.hasOwn(formData, key) && key in data) {
       formData[key] = data[key];
     }
   }
+  // 如果数据中包含主键，也设置主键
   if (Object.hasOwn(data, pk)) {
     formData[pk] = data[pk];
   }
 }
 
-// 设置表单项值
+/**
+ * 设置单个表单项的值
+ * @param key 字段名
+ * @param value 要设置的值
+ */
 function setFormItemData(key: string, value: any) {
   formData[key] = value;
 }
 
-// 显示modal
+/**
+ * 显示弹窗
+ * @param data 可选，编辑时传入数据用于填充表单
+ */
 function setModalVisible(data: IObject = {}) {
   modalVisible.value = true;
   // nextTick解决赋值后重置表单无效问题
@@ -329,14 +374,21 @@ function setModalVisible(data: IObject = {}) {
   });
 }
 
-// 表单提交
+/**
+ * 表单提交
+ * 验证通过后调用配置的 formAction，执行实际的保存操作
+ * 使用节流函数防止重复提交
+ */
 const handleSubmit = useThrottleFn(() => {
   formRef.value?.validate((valid: boolean) => {
     if (valid) {
+      // 提交前回调（如果配置了的话）
       if (typeof props.modalConfig.beforeSubmit === "function") {
         props.modalConfig.beforeSubmit(formData);
       }
+      // 调用配置的保存接口
       props.modalConfig.formAction(formData).then(() => {
+        // 根据容器类型生成成功提示信息
         let msg = "操作成功";
         if (props.modalConfig.component === "drawer") {
           if (props.modalConfig.drawer?.title) {
@@ -353,9 +405,12 @@ const handleSubmit = useThrottleFn(() => {
       });
     }
   });
-}, 3000);
+}, 3000); // 3秒内不能重复提交
 
-// 关闭弹窗
+/**
+ * 关闭弹窗
+ * 重置表单并清除验证状态
+ */
 function handleCloseModal() {
   modalVisible.value = false;
   formRef.value?.resetFields();
@@ -364,7 +419,7 @@ function handleCloseModal() {
   });
 }
 
-// 暴露的属性和方法
+/** 暴露的属性和方法，供父组件通过 ref 调用 */
 defineExpose({ setModalVisible, getFormData, setFormData, setFormItemData });
 </script>
 

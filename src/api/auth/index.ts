@@ -1,5 +1,5 @@
 import request from "@/utils/request";
-import { CaptchaResult, LoginData, LoginResult } from "./model";
+import { CaptchaResult, LoginData, LoginResult, RefreshTokenResult } from "./model";
 
 const AUTH_BASE_URL = "/api/v1/auth";
 
@@ -49,6 +49,20 @@ class AuthAPI {
     return request<any, CaptchaResult>({
       url: `${AUTH_BASE_URL}/captcha`,
       method: "get",
+    });
+  }
+
+  /**
+   * 刷新访问令牌
+   * @description 使用 RefreshToken 获取新的访问令牌（需后端支持）
+   * 注意：后端需提供 /api/v1/auth/refresh 接口
+   *
+   * @returns 刷新后的 Token 结果
+   */
+  static refreshToken() {
+    return request<any, RefreshTokenResult>({
+      url: `${AUTH_BASE_URL}/refresh`,
+      method: "post",
     });
   }
 }

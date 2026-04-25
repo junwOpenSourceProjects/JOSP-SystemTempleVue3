@@ -114,29 +114,45 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * 搜索表单组件 (PageSearch)
+ * 职责：提供搜索条件表单，支持多种表单项类型，展开/收起功能
+ * 使用方式：配合 PageContent 和 PageModal 使用 usePage hook
+ */
 import type { FormInstance } from "element-plus";
 import type { IObject, ISearchConfig } from "./types";
 
-// 定义接收的属性
+/** 组件属性：搜索配置对象 */
 const props = defineProps<{
   searchConfig: ISearchConfig;
 }>();
-// 自定义事件
+
+/** 自定义事件：搜索按钮点击、重置按钮点击 */
 const emit = defineEmits<{
   queryClick: [queryParams: IObject];
   resetClick: [queryParams: IObject];
 }>();
 
+/** 表单引用 */
 const queryFormRef = ref<FormInstance>();
-// 是否显示
+
+/** 是否显示组件（用于搜索区域的显示/隐藏切换） */
 const visible = ref(true);
-// 响应式的formItems
+
+/** 响应式的表单项数据 */
 const formItems = reactive(props.searchConfig.formItems);
-// 是否可展开/收缩
+
+/** 是否可展开/收缩 */
 const isExpandable = ref(props.searchConfig.isExpandable ?? true);
-// 是否已展开
+
+/** 是否已展开状态 */
 const isExpand = ref(false);
-// 表单项展示数量，若可展开，超出展示数量的表单项隐藏
+
+/**
+ * 计算属性：表单项展示数量
+ * - 如果可展开，默认显示3项，超出部分隐藏
+ * - 如果不可展开，显示全部表单项
+ */
 const showNumber = computed(() => {
   if (isExpandable.value === true) {
     return props.searchConfig.showNumber ?? 3;
@@ -144,39 +160,51 @@ const showNumber = computed(() => {
     return formItems.length;
   }
 });
-// 搜索表单数据
+
+/** 搜索表单数据（响应式对象） */
 const queryParams = reactive<IObject>({});
+
+/** 标签输入框类型的数据存储（input-tag类型使用） */
 const inputTagMap = reactive<IObject>({});
+
+/** 初始化表单项数据 */
 for (const item of formItems) {
+  // 执行初始化函数（如果配置了的话）
   item.initFn && item.initFn(item);
+
+  // 如果是标签输入框类型（input-tag）
   if (item.type === "input-tag") {
     inputTagMap[item.prop] = {
+      // 初始值，如果为数组直接使用，否则置为空数组
       data: Array.isArray(item.initialValue) ? item.initialValue : [],
-      inputVisible: false,
-      inputValue: "",
-      inputRef: null,
-      buttonAttrs: {
+      inputVisible: false,  // 输入框是否可见
+      inputValue: "",       // 当前输入的值
+      inputRef: null,       // 输入框DOM引用
+      buttonAttrs: {        // 按钮属性
         size: item.attrs?.size ?? "default",
         btnText: item.attrs?.btnText ?? "+ New Tag",
         style: "color: #b0b2b7",
       },
-      inputAttrs: {
+      inputAttrs: {         // 输入框属性
         size: item.attrs?.size ?? "default",
         clearable: item.attrs?.clearable ?? false,
         style: "width: 150px",
       },
-      tagAttrs: {
+      tagAttrs: {           // 标签属性
         size: item.attrs?.size ?? "default",
       },
     };
+
+    // 为 input-tag 类型创建计算属性，实现双向绑定
     queryParams[item.prop] = computed({
       get() {
+        // 如果配置了 join 属性，用该字符拼接为字符串；否则返回数组
         return typeof item.attrs?.join === "string"
           ? inputTagMap[item.prop].data.join(item.attrs.join)
           : inputTagMap[item.prop].data;
       },
       set(value: string) {
-        // resetFields时会被调用
+        // resetFields 时会被调用，将字符串解析为数组
         inputTagMap[item.prop].data =
           typeof item.attrs?.join === "string"
             ? value.split(item.attrs.join).filter((item: any) => item !== "")
@@ -184,36 +212,50 @@ for (const item of formItems) {
       },
     });
   } else {
+    // 普通表单项，直接使用初始值
     queryParams[item.prop] = item.initialValue ?? "";
   }
 }
 
-// 重置操作
+/**
+ * 重置表单
+ * 调用 Element Plus 的 resetFields 方法重置表单值
+ */
 function handleReset() {
   queryFormRef.value?.resetFields();
   emit("resetClick", queryParams);
 }
 
-// 查询操作
+/**
+ * 搜索按钮点击
+ * 触发查询事件，传递当前表单数据
+ */
 function handleQuery() {
   emit("queryClick", queryParams);
 }
 
-// 获取分页数据
+/**
+ * 获取查询参数
+ * 用于外部组件获取当前的搜索条件
+ * @returns 当前搜索条件对象
+ */
 function getQueryParams() {
   return queryParams;
 }
 
-// 显示/隐藏 SearchForm
+/**
+ * 切换搜索表单的显示/隐藏状态
+ */
 function toggleVisible() {
   visible.value = !visible.value;
 }
 
-// 关闭标签
+/** 关闭标签 */
 function handleCloseTag(prop: string, tag: string) {
   inputTagMap[prop].data.splice(inputTagMap[prop].data.indexOf(tag), 1);
 }
-// 添加标签
+
+/** 确认添加标签（输入框回车或失去焦点时触发） */
 function handleInputConfirm(prop: string) {
   if (inputTagMap[prop].inputValue) {
     inputTagMap[prop].data.push(inputTagMap[prop].inputValue);
@@ -221,15 +263,16 @@ function handleInputConfirm(prop: string) {
   inputTagMap[prop].inputVisible = false;
   inputTagMap[prop].inputValue = "";
 }
-// 显示标签输入框
+
+/** 显示标签输入框 */
 function handleShowInput(prop: string) {
   inputTagMap[prop].inputVisible = true;
   nextTick(() => {
-    inputTagMap[prop].inputRef.focus();
+    (inputTagMap[prop].inputRef as any)?.focus();
   });
 }
 
-// 暴露的属性和方法
+/** 暴露的属性和方法，供父组件通过 ref 调用 */
 defineExpose({ getQueryParams, toggleVisible });
 </script>
 

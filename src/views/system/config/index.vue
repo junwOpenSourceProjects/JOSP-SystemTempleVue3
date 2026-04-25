@@ -223,7 +223,7 @@ function handleEdit(row: any) {
 }
 
 function handleSubmit() {
-  formRef.value?.validate((valid) => {
+  formRef.value?.validate((valid: boolean) => {
     if (!valid) return;
     submitLoading.value = true;
     const { id, ...rest } = formData.value;
@@ -252,7 +252,7 @@ function handleDelete(row: any) {
 
 function handleBatchDelete() {
   if (!selectedRows.value.length) return;
-  const ids = selectedRows.value.map((r) => String(r.id));
+  const ids = selectedRows.value.map((r: any) => String(r.id));
   ElMessageBox.confirm(`确定删除选中的 ${ids.length} 条配置吗？`, "批量删除", { type: "warning" })
     .then(() => ConfigAPI.deleteBatch(ids))
     .then(() => {

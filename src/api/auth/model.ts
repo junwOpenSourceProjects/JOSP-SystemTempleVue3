@@ -49,3 +49,17 @@ export interface CaptchaResult {
    */
   captchaBase64: string;
 }
+
+/**
+ * 刷新Token响应
+ */
+export interface RefreshTokenResult {
+  /**
+   * 刷新后的访问token
+   */
+  token: string;
+  /**
+   * token 前缀 (如 "Bearer ")
+   */
+  tokenHead: string;
+}

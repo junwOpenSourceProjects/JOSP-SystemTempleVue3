@@ -16,6 +16,11 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * 字典选择组件
+ * 职责：根据字典类型编码(typeCode)从后端获取字典选项，渲染为下拉选择框
+ * 支持数字和字符串类型的值回显
+ */
 import DictAPI from "@/api/dict";
 import type { Ref } from "vue";
 
