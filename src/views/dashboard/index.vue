@@ -310,7 +310,11 @@ onUnmounted(() => {
       <div class="welcome-content">
         <h1 class="welcome-title">
           {{ getGreeting() }}，{{ userStore.user.nickname || "管理员" }}
-          <span class="wave">👋</span>
+          <span class="wave">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          </span>
         </h1>
         <p class="welcome-date">{{ formatDate() }}</p>
       </div>
@@ -485,11 +489,19 @@ onUnmounted(() => {
   align-items: center;
   justify-content: space-between;
   padding: 28px 32px;
-  background: linear-gradient(135deg, #1456f0 0%, #3b82f6 50%, #60a5fa 100%);
+  background: linear-gradient(135deg, #1456f0 0%, #1e3a8a 100%);
   border-radius: 20px;
   margin-bottom: 24px;
   position: relative;
   overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+  }
 }
 
 .welcome-content {
@@ -499,6 +511,7 @@ onUnmounted(() => {
 
 .welcome-title {
   margin: 0;
+  font-family: var(--font-family-display);
   font-size: 28px;
   font-weight: 600;
   color: #ffffff;
@@ -511,8 +524,7 @@ onUnmounted(() => {
 }
 
 @keyframes wave {
-  0%,
-  100% {
+  0%, 100% {
     transform: rotate(0deg);
   }
   25% {
@@ -525,6 +537,7 @@ onUnmounted(() => {
 
 .welcome-date {
   margin: 8px 0 0;
+  font-family: var(--font-family-ui);
   font-size: 14px;
   color: rgba(255, 255, 255, 0.8);
 }
@@ -574,14 +587,14 @@ onUnmounted(() => {
   gap: 16px;
   padding: 24px;
   background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-  transition: transform 0.3s, box-shadow 0.3s;
+  border-radius: var(--radius-generous);
+  box-shadow: var(--shadow-brand-purple-offset);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   margin-bottom: 20px;
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-brand-purple);
   }
 }
 
@@ -623,10 +636,12 @@ onUnmounted(() => {
 
 .stat-value {
   margin: 4px 0;
+  font-family: var(--font-family-display);
   font-size: 26px;
   font-weight: 600;
   color: #18181b;
   line-height: 1.2;
+  letter-spacing: -0.5px;
 }
 
 .stat-desc {
@@ -645,8 +660,8 @@ onUnmounted(() => {
 
 .chart-card {
   background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  border-radius: var(--radius-generous);
+  box-shadow: var(--shadow-brand-purple-offset);
   padding: 8px 0;
   margin-bottom: 20px;
   height: 360px;
@@ -660,8 +675,8 @@ onUnmounted(() => {
 // 日志卡片
 .log-card {
   background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  border-radius: var(--radius-generous);
+  box-shadow: var(--shadow-brand-purple-offset);
   margin-bottom: 20px;
   overflow: hidden;
 }
@@ -751,8 +766,8 @@ onUnmounted(() => {
 // 系统信息卡片
 .system-card {
   background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  border-radius: var(--radius-generous);
+  box-shadow: var(--shadow-brand-purple-offset);
   margin-bottom: 20px;
   overflow: hidden;
 }
@@ -789,7 +804,6 @@ onUnmounted(() => {
   align-items: center;
   gap: 10px;
   flex: 1;
-  max-width: 140px;
   margin-left: 16px;
 
   :deep(.el-progress) {

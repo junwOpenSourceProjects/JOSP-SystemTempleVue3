@@ -37,21 +37,51 @@
             <p class="brand-subtitle">登录到 JOSP 系统管理平台</p>
             <div class="brand-features">
               <div class="feature-item">
-                <div class="feature-icon">🚀</div>
+                <div class="feature-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                  </svg>
+                </div>
                 <span>高性能</span>
               </div>
               <div class="feature-item">
-                <div class="feature-icon">🛡️</div>
+                <div class="feature-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  </svg>
+                </div>
                 <span>安全可靠</span>
               </div>
               <div class="feature-item">
-                <div class="feature-icon">✨</div>
+                <div class="feature-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                  </svg>
+                </div>
                 <span>体验极致</span>
               </div>
+            </div>
+            <!-- 装饰性数据卡片 -->
+            <div class="brand-stat-card">
+              <div class="stat-card-inner">
+                <div class="stat-number">2,847</div>
+                <div class="stat-label">系统活跃用户</div>
+                <div class="stat-trend up">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <polyline points="18 15 12 9 6 15"/>
+                  </svg>
+                  +12.5%
+                </div>
+              </div>
+              <!-- 装饰圆 -->
+              <div class="stat-decor-circle"></div>
             </div>
           </div>
           <!-- 渐变背景 -->
           <div class="brand-gradient"></div>
+          <!-- 浮动装饰球 -->
+          <div class="floating-ball ball-1"></div>
+          <div class="floating-ball ball-2"></div>
         </div>
 
         <!-- 右侧表单区域 -->
@@ -143,12 +173,6 @@
             >
               {{ loading ? '登录中...' : $t('login.login') }}
             </el-button>
-
-            <!-- 账号密码提示 -->
-            <div class="demo-hint">
-              <span>{{ $t("login.username") }}: admin</span>
-              <span class="ml-4">{{ $t("login.password") }}: admin</span>
-            </div>
           </el-form>
         </div>
       </div>
@@ -156,7 +180,7 @@
 
     <!-- 底部版权 -->
     <footer class="login-footer">
-      <p>Copyright © 2021 - 2024 youlai.tech All Rights Reserved.</p>
+      <p>Copyright &copy; 2024 杭州珀箫文化传媒有限公司 All Rights Reserved.</p>
     </footer>
   </div>
 </template>
@@ -491,6 +515,94 @@ $font-display: 'Outfit', 'Helvetica Neue', Helvetica, Arial, sans-serif;
       }
     }
   }
+
+  // 装饰性数据卡片
+  .brand-stat-card {
+    margin-top: 48px;
+    position: relative;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 20px;
+    padding: 24px 28px;
+    overflow: hidden;
+    backdrop-filter: blur(12px);
+
+    .stat-card-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .stat-number {
+      font-family: $font-display;
+      font-size: 36px;
+      font-weight: 700;
+      color: $bg-white;
+      line-height: 1;
+      margin-bottom: 6px;
+      letter-spacing: -1px;
+    }
+
+    .stat-label {
+      font-family: $font-ui;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 12px;
+    }
+
+    .stat-trend {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-family: $font-ui;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 9999px;
+
+      &.up {
+        color: #86efac;
+        background: rgba(134, 239, 172, 0.15);
+      }
+
+      &.down {
+        color: #fca5a5;
+        background: rgba(252, 165, 165, 0.15);
+      }
+    }
+
+    .stat-decor-circle {
+      position: absolute;
+      right: -30px;
+      top: -30px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+    }
+  }
+
+  // 浮动装饰球
+  .floating-ball {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+
+    &.ball-1 {
+      width: 180px;
+      height: 180px;
+      right: -60px;
+      bottom: 60px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+    }
+
+    &.ball-2 {
+      width: 100px;
+      height: 100px;
+      right: 60px;
+      top: 80px;
+      background: radial-gradient(circle, rgba(58, 174, 255, 0.3) 0%, transparent 70%);
+    }
+  }
 }
 
 // 右侧表单区域
@@ -659,22 +771,6 @@ $font-display: 'Outfit', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
 }
 
-// 演示提示
-.demo-hint {
-  margin-top: 24px;
-  padding: 16px;
-  background: $bg-light;
-  border-radius: 12px;
-  font-family: $font-ui;
-  font-size: 13px;
-  color: $text-secondary;
-  text-align: center;
-
-  .ml-4 {
-    margin-left: 16px;
-  }
-}
-
 // 底部版权
 .login-footer {
   padding: 20px;
@@ -746,11 +842,6 @@ html.dark {
         color: #f3f4f6;
       }
     }
-  }
-
-  .demo-hint {
-    background: #1f2937;
-    color: #9ca3af;
   }
 
   .login-footer {

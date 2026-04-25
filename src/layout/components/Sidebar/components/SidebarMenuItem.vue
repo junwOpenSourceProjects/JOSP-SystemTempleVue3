@@ -214,7 +214,44 @@ function resolvePath(routePath: string) {
   }
 }
 
-.el-menu-item:hover {
-  background-color: $menu-hover;
+// 菜单项 hover 效果
+.el-menu-item {
+  transition: background-color 0.25s ease, color 0.25s ease;
+
+  &:hover {
+    background-color: $menu-hover !important;
+  }
+}
+
+// 子菜单标题 hover 效果
+.el-sub-menu__title {
+  transition: background-color 0.25s ease, color 0.25s ease;
+
+  &:hover {
+    background-color: $menu-hover !important;
+  }
+}
+
+// Active 菜单项品牌色左侧指示条
+.el-menu-item.is-active {
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.12) !important;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 60%;
+    background: #ffffff;
+    border-radius: 0 3px 3px 0;
+  }
+}
+
+// 子菜单激活态
+.el-sub-menu.is-active > .el-sub-menu__title {
+  color: $menu-active-text !important;
 }
 </style>
