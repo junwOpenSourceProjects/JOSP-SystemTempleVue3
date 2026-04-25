@@ -51,25 +51,25 @@ const hasPermission = (roles: string[], route: RouteRecordRaw) => {
 const filterAsyncRoutes = (routes: RouteVO[], roles: string[]) => {
   const asyncRoutes: RouteRecordRaw[] = [];
   routes.forEach((route) => {
-    // Filter button-type menus (buttons don't need route generation)
-    if ((route as any).type === MenuTypeEnum.BUTTON) {
+    // Skip button-type menus (they don't need route generation)
+    // Also skip menus that have neither path nor component
+    if (
+      (route as any).type === MenuTypeEnum.BUTTON ||
+      (!route.path && !route.component)
+    ) {
       return;
     }
 
-    const tmpRoute = { ...route } as RouteRecordRaw; // Deep copy to avoid mutation
+    const tmpRoute = { ...route } as RouteRecordRaw;
     if (hasPermission(roles, tmpRoute)) {
-      // If top-level directory, replace with Layout component
+      // Top-level directory: use Layout component
       if (tmpRoute.component?.toString() == "Layout") {
         tmpRoute.component = Layout;
       } else {
-        // If sub-directory, dynamically load component
-        const component = modules[`../../views/${tmpRoute.component}.vue`];
-        if (component) {
-          tmpRoute.component = component;
-        } else {
-          // Fallback to 404 error page if component not found
-          tmpRoute.component = modules[`../../views/error-page/404.vue`];
-        }
+        // Sub-directory: dynamically load component
+        const componentPath = `../../views/${tmpRoute.component}.vue`;
+        const component = modules[componentPath];
+        tmpRoute.component = component ?? modules[`../../views/error-page/404.vue`];
       }
 
       if (tmpRoute.children) {

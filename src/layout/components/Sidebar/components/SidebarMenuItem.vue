@@ -56,6 +56,7 @@ defineOptions({
 import path from "path-browserify";
 import { isExternal } from "@/utils/index";
 import { RouteRecordRaw } from "vue-router";
+import { MenuTypeEnum } from "@/enums/MenuTypeEnum";
 
 const props = defineProps({
   /**
@@ -94,14 +95,12 @@ function hasOneShowingChild(
   children: RouteRecordRaw[] = [],
   parent: RouteRecordRaw
 ) {
-  // 子路由集合
+  // Also filter out BUTTON-type children as they are action permissions, not routes
   const showingChildren = children.filter((route: RouteRecordRaw) => {
-    if (route.meta?.hidden) {
-      // 过滤不显示的子路由
+    if (route.meta?.hidden || (route as any).type === MenuTypeEnum.BUTTON) {
       return false;
     } else {
       route.meta!.hidden = false;
-      // 临时变量（多个子路由 onlyOneChild 变量是用不上的）
       onlyOneChild.value = route;
       return true;
     }
