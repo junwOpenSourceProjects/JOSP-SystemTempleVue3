@@ -71,7 +71,7 @@ const loadData = async () => {
   loading.value = true;
   try {
     const res = await NoticeAPI.getPage(queryParams);
-    noticeList.value = res.list || [];
+    noticeList.value = res.list || (res as any).records || [];
     total.value = res.total || 0;
   } catch (error) {
     console.error("Failed to load notices:", error);

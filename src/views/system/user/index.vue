@@ -411,7 +411,7 @@ function handleQuery() {
   UserAPI.getPage(queryParams)
     .then((data) => {
       console.log("handleQuery", data);
-      pageData.value = data.list;
+      pageData.value = data.list || (data as any).records;
       total.value = data.total;
     })
     .finally(() => {

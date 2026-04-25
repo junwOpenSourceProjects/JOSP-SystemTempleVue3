@@ -198,7 +198,7 @@ function handleQuery() {
     loading.value = true;
     DictAPI.getDictPage(queryParams)
       .then((data) => {
-        dictList.value = data.list;
+        dictList.value = data.list || (data as any).records;
         total.value = data.total;
       })
       .finally(() => (loading.value = false));

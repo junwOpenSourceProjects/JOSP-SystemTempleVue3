@@ -14,6 +14,7 @@ import { MenuTypeEnum } from "@/enums/MenuTypeEnum";
 
 const modules = import.meta.glob("../../views/**/**.vue");
 const Layout = () => import("@/layout/index.vue");
+const ParentView = () => import("@/components/ParentView/index.vue");
 
 /**
  * Permission Checker
@@ -48,7 +49,7 @@ const hasPermission = (roles: string[], route: RouteRecordRaw) => {
  * @param roles - User's role collection
  * @returns Filtered array of routes user has permission to access
  */
-const filterAsyncRoutes = (routes: RouteVO[], roles: string[]) => {
+const filterAsyncRoutes = (routes: RouteVO[], roles: string[], isRoot: boolean = true) => {
   const asyncRoutes: RouteRecordRaw[] = [];
   routes.forEach((route) => {
     // Skip button-type menus (they don't need route generation)
@@ -62,18 +63,23 @@ const filterAsyncRoutes = (routes: RouteVO[], roles: string[]) => {
 
     const tmpRoute = { ...route } as RouteRecordRaw;
     if (hasPermission(roles, tmpRoute)) {
-      // Top-level directory: use Layout component
-      if (tmpRoute.component?.toString() == "Layout") {
-        tmpRoute.component = Layout;
+      // 顶级目录：如果类型为目录(CATALOG, 即 0) 或 component 为空且是顶层，则使用 Layout
+      // 嵌套目录：使用 ParentView
+      if ((route as any).type === MenuTypeEnum.CATALOG || !tmpRoute.component || tmpRoute.component?.toString() === "Layout") {
+        if (isRoot) {
+           tmpRoute.component = Layout;
+        } else {
+           tmpRoute.component = ParentView;
+        }
       } else {
-        // Sub-directory: dynamically load component
+        // 子目录页面：动态加载组件
         const componentPath = `../../views/${tmpRoute.component}.vue`;
         const component = modules[componentPath];
         tmpRoute.component = component ?? modules[`../../views/error-page/404.vue`];
       }
 
       if (tmpRoute.children) {
-        tmpRoute.children = filterAsyncRoutes(route.children ?? [], roles);
+        tmpRoute.children = filterAsyncRoutes(route.children ?? [], roles, false);
       }
 
       asyncRoutes.push(tmpRoute);
@@ -114,7 +120,7 @@ export const usePermissionStore = defineStore("permission", () => {
       MenuAPI.getRoutes()
         .then((data) => {
           // Filter routes user has permission to access
-          const accessedRoutes = filterAsyncRoutes(data, roles);
+          const accessedRoutes = filterAsyncRoutes(data, roles, true);
           setRoutes(accessedRoutes);
           resolve(accessedRoutes);
         })

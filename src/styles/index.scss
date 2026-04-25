@@ -1,7 +1,76 @@
 @use "./reset";
 
+// --- MiniMax UI Overrides for Element Plus ---
+:root {
+  // Colors
+  --el-color-primary: var(--brand-6);
+  --el-color-primary-light-3: var(--color-primary-500);
+  --el-color-primary-light-5: var(--color-primary-light);
+  --el-color-primary-light-7: var(--color-primary-200);
+  --el-color-primary-light-9: var(--bg-secondary);
+  --el-color-primary-dark-2: var(--color-primary-700);
+
+  // Text
+  --el-text-color-primary: var(--col-text00);
+  --el-text-color-regular: var(--col-text04);
+  --el-text-color-secondary: var(--col-text-muted);
+
+  // Border Radius
+  --el-border-radius-base: var(--radius-standard);
+  --el-border-radius-small: var(--radius-minimal);
+  --el-border-radius-round: var(--radius-pill);
+
+  // Shadows
+  --el-box-shadow-light: var(--shadow-standard);
+  --el-box-shadow: var(--shadow-card-elevation);
+
+  // Typography
+  --el-font-family: var(--font-family-ui);
+}
+
+// Global UI Component overrides
+html, body {
+  font-family: var(--font-family-ui);
+  background-color: var(--col-bg13);
+  color: var(--col-text00);
+  line-height: 1.5;
+}
+
+// Element Plus Component Overrides
+.el-card {
+  border-radius: var(--radius-generous) !important;
+  border: none !important;
+  box-shadow: var(--shadow-standard) !important;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    box-shadow: var(--shadow-card-elevation) !important;
+  }
+}
+
+.el-button {
+  border-radius: var(--radius-pill) !important;
+  font-family: var(--font-family-ui);
+  font-weight: 500;
+}
+
+.el-button--primary {
+  background-color: var(--col-text-charcoal) !important;
+  border-color: var(--col-text-charcoal) !important;
+  color: #ffffff !important;
+
+  &:hover, &:focus {
+    background-color: #333333 !important;
+    border-color: #333333 !important;
+  }
+}
+
+.el-input__wrapper {
+  border-radius: var(--radius-standard) !important;
+}
+
 .app-container {
-  padding: 15px;
+  padding: 24px;
 }
 
 .search-container {

@@ -8,6 +8,59 @@
   --menu-hover: rgba(255, 255, 255, 0.15);
   --sidebar-logo-background: #0d3ecc;
   --sidebar-border-right: rgba(255, 255, 255, 0.1);
+
+  // --- MiniMax CSS Tokens ---
+  /* Brand Primary */
+  --brand-6: #1456f0;
+  --col-brand00: #3daeff;
+  --col-brand02: #ea5ec1;
+
+  /* Blue Scale (Primary) */
+  --color-primary-200: #bfdbfe;
+  --color-primary-light: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --brand-3: #17437d;
+
+  /* Text Colors */
+  --col-text00: #222222;
+  --col-text-dark: #18181b;
+  --col-text-charcoal: #181e25;
+  --col-text04: #45515e;
+  --col-text-muted: #8e8e93;
+  --brand-2: #5f5f5f;
+
+  /* Surface & Background */
+  --col-bg13: #ffffff;
+  --bg-secondary: #f0f0f0;
+  --fill-bg-white: hsla(0, 0%, 100%, 0.4);
+  --border-light: #f2f3f5;
+  --border-gray: #e5e7eb;
+
+  /* Semantic */
+  --success-bg: #e8ffea;
+
+  /* Shadows */
+  --shadow-standard: rgba(0, 0, 0, 0.08) 0px 4px 6px;
+  --shadow-soft-glow: rgba(0, 0, 0, 0.08) 0px 0px 22.576px;
+  --shadow-brand-purple: rgba(44, 30, 116, 0.16) 0px 0px 15px;
+  --shadow-brand-purple-offset: rgba(44, 30, 116, 0.11) 6.5px 2px 17.5px;
+  --shadow-card-elevation: rgba(36, 36, 36, 0.08) 0px 12px 16px -4px;
+
+  /* Typography */
+  --font-family-ui: 'DM Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-family-display: 'Outfit', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-family-mid: 'Poppins', sans-serif;
+  --font-family-data: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  /* Border Radius */
+  --radius-minimal: 4px;
+  --radius-standard: 8px;
+  --radius-comfortable: 12px;
+  --radius-generous: 20px;
+  --radius-large: 24px;
+  --radius-pill: 9999px;
 }
 
 /** 暗黑主题 */

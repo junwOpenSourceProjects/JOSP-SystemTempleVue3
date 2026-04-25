@@ -24,7 +24,7 @@ class UserAPI {
    */
   static getPage(queryParams: UserQuery) {
     return request<any, PageResult<UserPageVO[]>>({
-      url: `${USER_BASE_URL}/page`,
+      url: `${USER_BASE_URL}`,
       method: "get",
       params: queryParams,
     });
@@ -38,7 +38,7 @@ class UserAPI {
    */
   static getFormData(userId: number) {
     return request<any, UserForm>({
-      url: `${USER_BASE_URL}/${userId}/form`,
+      url: `${USER_BASE_URL}/${userId}`,
       method: "get",
     });
   }
@@ -81,9 +81,9 @@ class UserAPI {
    */
   static updatePassword(id: number, password: string) {
     return request({
-      url: `${USER_BASE_URL}/${id}/password`,
-      method: "patch",
-      params: { password: password },
+      url: `${USER_BASE_URL}/${id}/password/reset`,
+      method: "put",
+      params: { newPassword: password },
     });
   }
 
@@ -94,9 +94,11 @@ class UserAPI {
    * @returns 请求结果
    */
   static deleteByIds(ids: string) {
+    const idArray = ids.split(',').map(id => Number(id));
     return request({
-      url: `${USER_BASE_URL}/${ids}`,
+      url: `${USER_BASE_URL}/batch`,
       method: "delete",
+      data: idArray,
     });
   }
 
