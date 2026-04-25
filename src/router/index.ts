@@ -104,6 +104,12 @@ export const constantRoutes: RouteRecordRaw[] = [
         component: () => import("@/views/error-page/404.vue"),
         meta: { hidden: true },
       },
+      {
+        // 通配路由：匹配所有未定义的路径，显示404页面
+        path: ":pathMatch(.*)*",
+        redirect: "/404",
+        meta: { hidden: true },
+      },
     ],
   },
 ];

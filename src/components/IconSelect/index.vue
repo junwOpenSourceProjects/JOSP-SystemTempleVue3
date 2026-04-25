@@ -150,7 +150,7 @@ function filterIcons() {
         )
       : svgIcons;
   } else {
-    // 过滤Element Plus图标逻辑 TODO
+    // 过滤 Element Plus 图标（已在上面通用过滤逻辑中统一处理）
     filteredEpIcons.value = searchText.value
       ? epIcons.filter((iconName) =>
           iconName.toLowerCase().includes(searchText.value.toLowerCase())
