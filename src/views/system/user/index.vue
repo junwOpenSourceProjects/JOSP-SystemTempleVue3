@@ -57,9 +57,10 @@
           </el-form>
         </div>
 
-        <el-card shadow="never" class="table-container">
+        <el-card class="table-container">
           <template #header>
-            <div class="flex justify-between">
+            <div class="flex justify-between items-center">
+              <span class="text-base font-semibold text-text00">用户列表</span>
               <div>
                 <el-button
                   v-hasPerm="['sys:user:add']"

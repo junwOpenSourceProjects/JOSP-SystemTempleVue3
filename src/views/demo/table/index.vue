@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
-    <el-card shadow="never" class="table-card">
+    <el-card class="table-card">
       <template #header>
         <div class="flex items-center justify-between">
-          <span class="text-lg font-medium">综合表格</span>
+          <span class="text-base font-semibold text-text00">综合表格</span>
           <el-button type="primary" @click="handleCreate">
             <i class="i-ep-plus mr-1" />
             新增
@@ -46,8 +46,6 @@
       <el-table
         v-loading="listLoading"
         :data="list"
-        border
-        stripe
         highlight-current-row
         class="demo-table"
       >

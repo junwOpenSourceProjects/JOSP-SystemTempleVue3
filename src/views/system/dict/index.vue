@@ -23,7 +23,7 @@
       </el-form>
     </div>
 
-    <el-card shadow="never" class="table-container">
+    <el-card  class="table-container">
       <template #header>
         <el-button
           v-hasPerm="['sys:dict_type:add']"
@@ -42,7 +42,7 @@
         v-loading="loading"
         highlight-current-row
         :data="dictTypeList"
-        border
+       
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center" />

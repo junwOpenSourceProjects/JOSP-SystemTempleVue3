@@ -26,6 +26,15 @@ export default defineConfig({
     colors: {
       primary: "var(--el-color-primary)",
       primary_dark: "var(--el-color-primary-light-5)",
+      // MiniMax text scale
+      text00: "var(--col-text00)",
+      text04: "var(--col-text04)",
+      textMuted: "var(--col-text-muted)",
+      brand: "var(--brand-6)",
+      brandLight: "var(--color-primary-light)",
+      brand100: "var(--color-primary-200)",
+      bgSecondary: "var(--bg-secondary)",
+      borderLight: "var(--border-light)",
     },
   },
   presets: [

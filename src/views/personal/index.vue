@@ -225,7 +225,7 @@ const resetProfile = () => {
           <!-- Profile Form -->
           <el-col :xs="24" :lg="16">
             <div class="form-section">
-              <el-card shadow="never" class="form-card">
+              <el-card class="form-card">
                 <template #header>
                   <div class="card-header">
                     <span class="card-title">基本信息</span>
@@ -301,7 +301,7 @@ const resetProfile = () => {
       <!-- Security Tab -->
       <div v-show="activeTab === 'security'" class="tab-content">
         <div class="security-section">
-          <el-card shadow="never" class="security-card">
+          <el-card class="security-card">
             <template #header>
               <div class="card-header">
                 <span class="card-title">修改密码</span>
@@ -354,7 +354,7 @@ const resetProfile = () => {
           </el-card>
 
           <!-- Security Tips -->
-          <el-card shadow="never" class="tips-card">
+          <el-card class="tips-card">
             <template #header>
               <div class="card-header">
                 <span class="card-title">

@@ -1,7 +1,7 @@
 <!-- 登录日志 -->
 <template>
   <div class="app-container">
-    <el-card shadow="never" class="search-container">
+    <el-card class="search-container">
       <el-form ref="queryFormRef" :model="queryParams" :inline="true">
         <el-form-item label="用户名" prop="username">
           <el-input
@@ -37,7 +37,7 @@
       </el-form>
     </el-card>
 
-    <el-card shadow="never" class="table-container">
+    <el-card class="table-container">
       <template #header>
         <div class="flex justify-between">
           <div>

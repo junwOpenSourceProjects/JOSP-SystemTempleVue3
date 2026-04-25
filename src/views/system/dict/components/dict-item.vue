@@ -19,7 +19,7 @@
         </el-form-item>
       </el-form>
     </div>
-    <el-card shadow="never">
+    <el-card>
       <template #header>
         <el-button
           v-hasPerm="['sys:dict:add']"

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-card shadow="never">
+    <el-card>
       <template #header>
         <div class="clearfix">
           <span>高级表单体验</span>

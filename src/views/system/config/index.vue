@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <!-- 搜索栏 -->
-    <el-card shadow="never" class="mb-4">
+    <el-card class="mb-4">
       <el-form :model="queryParams" :inline="true">
         <el-form-item label="配置名称">
           <el-input
@@ -33,7 +33,7 @@
     </el-card>
 
     <!-- 表格主体 -->
-    <el-card shadow="never">
+    <el-card>
       <template #header>
         <div class="flex-x-between">
           <span class="font-semibold">配置列表</span>

@@ -151,7 +151,7 @@ onMounted(() => {
 <template>
   <div class="notice-container">
     <!-- Search Card -->
-    <el-card shadow="never" class="search-card">
+    <el-card class="search-card">
       <el-form :model="queryParams" :inline="true" class="search-form">
         <el-form-item label="标题">
           <el-input
@@ -206,7 +206,7 @@ onMounted(() => {
     </el-card>
 
     <!-- Table Card -->
-    <el-card shadow="never" class="table-card">
+    <el-card class="table-card">
       <template #header>
         <div class="table-header">
           <span class="table-title">通知公告列表</span>

@@ -20,7 +20,7 @@
       </el-form>
     </div>
 
-    <el-card shadow="never" class="table-container">
+    <el-card class="table-container">
       <template #header>
         <el-button type="success" @click="handleOpenDialog()"
           ><i-ep-plus />新增</el-button
@@ -38,7 +38,6 @@
         v-loading="loading"
         :data="roleList"
         highlight-current-row
-        border
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center" />

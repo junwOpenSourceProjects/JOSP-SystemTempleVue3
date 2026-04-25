@@ -33,7 +33,7 @@
       </el-form>
     </div>
 
-    <el-card shadow="never" class="table-container">
+    <el-card  class="table-container">
       <template #header>
         <el-button
           v-hasPerm="['sys:dept:add']"

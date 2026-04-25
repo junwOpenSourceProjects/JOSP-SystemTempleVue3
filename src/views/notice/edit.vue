@@ -126,7 +126,7 @@ onMounted(() => {
 
 <template>
   <div class="notice-edit-container">
-    <el-card shadow="never" class="form-card" v-loading="pageLoading">
+    <el-card class="form-card" v-loading="pageLoading">
       <template #header>
         <div class="card-header">
           <span class="card-title">{{ isEdit ? "编辑公告" : "新增公告" }}</span>
