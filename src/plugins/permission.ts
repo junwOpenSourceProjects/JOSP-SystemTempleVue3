@@ -102,8 +102,8 @@ export function hasAuth(
   type: "button" | "role" = "button"
 ) {
   const { roles, perms } = useUserStore().user;
-  // ROOT role (super admin) has all button permissions
-  if (type === "button" && roles && roles.includes("ROOT")) {
+  // ROOT / SUPER_ADMIN role (super admin) has all button permissions
+  if (type === "button" && roles && (roles.includes("ROOT") || roles.includes("SUPER_ADMIN"))) {
     return true;
   }
   const auths = type === "button" ? perms : roles;

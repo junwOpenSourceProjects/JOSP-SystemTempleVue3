@@ -27,8 +27,8 @@ const ParentView = () => import("@/components/ParentView/index.vue");
  */
 const hasPermission = (roles: string[], route: RouteRecordRaw) => {
   if (route.meta && route.meta.roles) {
-    // ROOT role (super admin) has all permissions, bypass check
-    if (roles.includes("ROOT")) {
+    // ROOT / SUPER_ADMIN role (super admin) has all permissions, bypass check
+    if (roles.includes("ROOT") || roles.includes("SUPER_ADMIN")) {
       return true;
     }
     return roles.some((role) => {

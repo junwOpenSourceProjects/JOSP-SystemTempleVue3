@@ -1,20 +1,19 @@
 <!-- 侧边栏菜单项组件 -->
 <!-- 负责渲染单个菜单项，支持一级菜单和有多级子菜单的父菜单 -->
 <template>
-  <div v-if="!item.meta || !item.meta.hidden">
-    <!--
-      显示具有单个子路由的菜单项或没有子路由的父路由
-      条件：
-        1. 只有一个子路由
-        2. 或者没有子路由
-        3. 且没有配置 alwaysShow（强制显示为父菜单）
-    -->
-      v-if="
+    <div v-if="!item.meta || !item.meta.hidden">
+      <!--
+        显示具有单个子路由的菜单项或没有子路由的父路由
+        条件：
+          1. 只有一个子路由
+          2. 或者没有子路由
+          3. 且没有配置 alwaysShow（强制显示为父菜单）
+      -->
+      <template v-if="
         hasOneShowingChild(item.children, item as RouteRecordRaw) &&
         (!onlyOneChild.children || onlyOneChild.noShowingChildren) &&
         !item.meta?.alwaysShow
-      "
-    >
+      ">
       <AppLink
         v-if="onlyOneChild.meta"
         :to="{
