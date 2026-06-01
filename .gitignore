@@ -17,3 +17,7 @@ package-lock.json
 pnpm-lock.yaml
 stats.html
 Thumbs.db
+.nuxt/
+.output/
+.data/
+.env
