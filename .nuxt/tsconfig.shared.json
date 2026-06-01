@@ -119,7 +119,7 @@
         "./color-mode-options.mjs"
       ],
       "#app-manifest": [
-        "./manifest/meta/38af1118-674b-45aa-9c14-526395492f1d"
+        "./manifest/meta/dev.json"
       ],
       "#build": [
         "."

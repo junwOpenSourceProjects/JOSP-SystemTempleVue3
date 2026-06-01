@@ -1,66 +1,88 @@
-<template>
-  <div class="layout">
-    <header class="header">
-      <div class="container flex items-center justify-between">
-        <h1 class="logo font-display">管理系统</h1>
-        <nav class="nav flex gap-2">
-          <UBadge variant="subtle" color="primary">首页</UBadge>
-          <UBadge variant="soft">用户管理</UBadge>
-          <UBadge variant="soft">系统设置</UBadge>
-        </nav>
-      </div>
-    </header>
-    
-    <main class="main">
-      <slot />
-    </main>
-    
-    <footer class="footer">
-      <div class="container">
-        <p class="text-muted">© 2024 管理系统</p>
-      </div>
-    </footer>
-  </div>
-</template>
-
 <script setup lang="ts">
+import type { NavigationMenuItem } from '@nuxt/ui'
+
+const open = ref(false)
+
+const links = [[{
+  label: '首页',
+  icon: 'i-lucide-house',
+  to: '/',
+  onSelect: () => { open.value = false }
+}, {
+  label: '仪表板',
+  icon: 'i-lucide-layout-dashboard',
+  to: '/dashboard',
+  onSelect: () => { open.value = false }
+}, {
+  label: '模板管理',
+  icon: 'i-lucide-files',
+  to: '/templates',
+  onSelect: () => { open.value = false }
+}, {
+  label: '用户管理',
+  icon: 'i-lucide-users',
+  to: '/users',
+  onSelect: () => { open.value = false }
+}, {
+  label: '系统设置',
+  to: '/settings',
+  icon: 'i-lucide-settings',
+  defaultOpen: true,
+  type: 'trigger',
+  children: [{
+    label: '常规设置',
+    to: '/settings',
+    exact: true,
+    onSelect: () => { open.value = false }
+  }, {
+    label: '权限管理',
+    to: '/settings/permissions',
+    onSelect: () => { open.value = false }
+  }, {
+    label: '操作日志',
+    to: '/settings/logs',
+    onSelect: () => { open.value = false }
+  }]
+}]] satisfies NavigationMenuItem[][]
 </script>
 
-<style scoped>
-.layout {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+<template>
+  <UDashboardGroup unit="rem">
+    <UDashboardSidebar
+      id="default"
+      v-model:open="open"
+      collapsible
+      resizable
+      class="bg-elevated/25"
+    >
+      <template #header="{ collapsed }">
+        <div class="flex items-center gap-2 px-2 py-3">
+          <UIcon name="i-lucide-layout-template" class="size-6 text-primary" />
+          <span v-if="!collapsed" class="font-semibold text-base">系统模板</span>
+        </div>
+      </template>
 
-.header {
-  background-color: var(--color-bg);
-  border-bottom: 1px solid var(--color-border-light);
-  padding: 16px 0;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
+      <template #default="{ collapsed }">
+        <UNavigationMenu
+          :collapsed="collapsed"
+          :items="links[0]"
+          orientation="vertical"
+          tooltip
+          popover
+        />
+      </template>
 
-.logo {
-  font-size: 24px;
-  font-weight: 600;
-  color: var(--color-text);
-}
+      <template #footer="{ collapsed }">
+        <div class="flex items-center gap-2 px-2 py-2">
+          <UAvatar size="sm" icon="i-lucide-user" />
+          <div v-if="!collapsed" class="flex-1 min-w-0">
+            <p class="text-sm font-medium truncate">管理员</p>
+            <p class="text-xs text-muted truncate">admin@example.com</p>
+          </div>
+        </div>
+      </template>
+    </UDashboardSidebar>
 
-.main {
-  flex: 1;
-  padding: 32px 0;
-}
-
-.footer {
-  background-color: var(--color-bg-dark);
-  color: rgba(255, 255, 255, 0.8);
-  padding: 24px 0;
-  margin-top: auto;
-}
-
-.footer p {
-  font-size: 14px;
-}
-</style>
+    <slot />
+  </UDashboardGroup>
+</template>
