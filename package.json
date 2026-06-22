@@ -21,7 +21,9 @@
   },
   "pnpm": {
     "overrides": {
-      "vue": "^3.5.0"
+      "vue": "^3.5.0",
+      "esbuild": "^0.28.1",
+      "launch-editor": "^2.14.1"
     }
   }
 }
