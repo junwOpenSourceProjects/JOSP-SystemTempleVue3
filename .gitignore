@@ -21,3 +21,21 @@ Thumbs.db
 .output/
 .data/
 .env
+.env.*
+!.env.example
+
+# Log files
+logs/
+*.log
+npm-debug.log*
+
+# Nitro / cache / coverage
+.nitro/
+.cache/
+coverage/
+
+# Local editor / OS files
+.vscode/*
+!.vscode/extensions.json
+*.sw?
+*~
